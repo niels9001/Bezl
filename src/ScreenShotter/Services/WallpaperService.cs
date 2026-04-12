@@ -41,9 +41,10 @@ public static partial class WallpaperService
             screenH = 1080;
         }
 
-        var wallpaperPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "ScreenShotter", "wallpaper.jpg");
+        // Use the real user profile path (not MSIX-virtualized) so explorer.exe can read it
+        var userProfile = Environment.GetEnvironmentVariable("USERPROFILE")
+            ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var wallpaperPath = Path.Combine(userProfile, "Pictures", "ScreenShotter", "wallpaper.jpg");
 
         Directory.CreateDirectory(Path.GetDirectoryName(wallpaperPath)!);
 

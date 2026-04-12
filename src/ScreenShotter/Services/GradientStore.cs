@@ -7,9 +7,11 @@ namespace ScreenShotter.Services;
 
 public static class GradientStore
 {
+    // Use real user profile path (not MSIX-virtualized) so data persists across app updates
     private static readonly string StorePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "ScreenShotter", "gradients.json");
+        Environment.GetEnvironmentVariable("USERPROFILE")
+            ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+        ".screenshotter", "gradients.json");
 
     public static List<GradientDefinition> Load()
     {
