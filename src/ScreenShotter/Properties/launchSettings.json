@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ScreenShotter (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ScreenShotter (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
