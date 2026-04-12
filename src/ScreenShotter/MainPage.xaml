@@ -151,38 +151,43 @@
                         <!-- Corner radius handle overlay -->
                         <Canvas x:Name="HandleCanvas" IsHitTestVisible="True">
                             <!-- Top-left handle -->
-                            <Ellipse x:Name="HandleTL" Width="12" Height="12"
+                            <Ellipse x:Name="HandleTL" Width="16" Height="16"
                                      Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                     Stroke="White" StrokeThickness="1.5"
+                                     Stroke="White" StrokeThickness="2"
                                      Opacity="0"
                                      PointerPressed="Handle_PointerPressed"
                                      PointerMoved="Handle_PointerMoved"
                                      PointerReleased="Handle_PointerReleased" />
                             <!-- Top-right handle -->
-                            <Ellipse x:Name="HandleTR" Width="12" Height="12"
+                            <Ellipse x:Name="HandleTR" Width="16" Height="16"
                                      Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                     Stroke="White" StrokeThickness="1.5"
+                                     Stroke="White" StrokeThickness="2"
                                      Opacity="0"
                                      PointerPressed="Handle_PointerPressed"
                                      PointerMoved="Handle_PointerMoved"
                                      PointerReleased="Handle_PointerReleased" />
                             <!-- Bottom-left handle -->
-                            <Ellipse x:Name="HandleBL" Width="12" Height="12"
+                            <Ellipse x:Name="HandleBL" Width="16" Height="16"
                                      Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                     Stroke="White" StrokeThickness="1.5"
+                                     Stroke="White" StrokeThickness="2"
                                      Opacity="0"
                                      PointerPressed="Handle_PointerPressed"
                                      PointerMoved="Handle_PointerMoved"
                                      PointerReleased="Handle_PointerReleased" />
                             <!-- Bottom-right handle -->
-                            <Ellipse x:Name="HandleBR" Width="12" Height="12"
+                            <Ellipse x:Name="HandleBR" Width="16" Height="16"
                                      Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                     Stroke="White" StrokeThickness="1.5"
+                                     Stroke="White" StrokeThickness="2"
                                      Opacity="0"
                                      PointerPressed="Handle_PointerPressed"
                                      PointerMoved="Handle_PointerMoved"
                                      PointerReleased="Handle_PointerReleased" />
                         </Canvas>
+                        <!-- Drag interaction border (shown while dragging) -->
+                        <Border x:Name="DragBorder"
+                                BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
+                                BorderThickness="2" CornerRadius="4"
+                                Opacity="0" IsHitTestVisible="False" />
                         <!-- Corner radius label (shown while dragging) -->
                         <Border x:Name="RadiusLabel"
                                 Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
@@ -211,21 +216,9 @@
             </StackPanel>
         </Grid>
 
-        <!-- Bottom Bar: Status + Export Buttons -->
+        <!-- Bottom Bar: Export Buttons -->
         <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="0,16,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock
-                Grid.Column="0"
-                Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
-                VerticalAlignment="Center"
-                Opacity="0.7"
-                TextTrimming="CharacterEllipsis" />
-
-            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
                 <Button
                     Command="{x:Bind ViewModel.CopyToClipboardCommand}"
                     IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"

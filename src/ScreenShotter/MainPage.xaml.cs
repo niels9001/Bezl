@@ -1,4 +1,3 @@
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -16,8 +15,10 @@ public sealed partial class MainPage : Page
     private bool _isDraggingHandle;
     private Point _dragStartPoint;
     private double _dragStartRadius;
+    private double _currentDragRadius;
     private const double MaxCornerRadius = 50;
-    private const double HandleInset = 24;
+    private const double HandleInset = 28;
+    private const double HandleSize = 16;
 
     public MainPage()
     {
@@ -56,10 +57,10 @@ public sealed partial class MainPage : Page
     {
         if (PreviewImage.ActualWidth <= 0 || PreviewImage.ActualHeight <= 0) return;
 
-        // Calculate the rendered image rect within the container
         var imageRect = GetRenderedImageRect();
-        double inset = HandleInset + ViewModel.CornerRadius * 0.3;
-        double hs = 6; // half handle size
+        double radius = _isDraggingHandle ? _currentDragRadius : ViewModel.CornerRadius;
+        double inset = HandleInset + radius * 0.3;
+        double hs = HandleSize / 2;
 
         Canvas.SetLeft(HandleTL, imageRect.X + inset - hs);
         Canvas.SetTop(HandleTL, imageRect.Y + inset - hs);
@@ -110,11 +111,14 @@ public sealed partial class MainPage : Page
         _isDraggingHandle = true;
         _dragStartPoint = e.GetCurrentPoint(PreviewContainer).Position;
         _dragStartRadius = ViewModel.CornerRadius;
+        _currentDragRadius = _dragStartRadius;
         handle.CapturePointer(e.Pointer);
         e.Handled = true;
 
+        // Show drag feedback
+        DragBorder.Opacity = 0.6;
         RadiusLabel.Opacity = 1;
-        RadiusLabelText.Text = $"Radius: {(int)ViewModel.CornerRadius}px";
+        RadiusLabelText.Text = $"Radius: {(int)_currentDragRadius}px";
     }
 
     private void Handle_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -124,24 +128,22 @@ public sealed partial class MainPage : Page
         var currentPoint = e.GetCurrentPoint(PreviewContainer).Position;
         var imageRect = GetRenderedImageRect();
 
-        // Calculate delta as diagonal movement toward/away from nearest corner
         double dx = currentPoint.X - _dragStartPoint.X;
         double dy = currentPoint.Y - _dragStartPoint.Y;
 
-        // Determine which corner based on which handle
-        double sign = 1;
-        if (sender == HandleTL) sign = (dx + dy) / 2.0;     // toward center = positive
+        // Determine direction based on which corner handle
+        double sign;
+        if (sender == HandleTL) sign = (dx + dy) / 2.0;
         else if (sender == HandleTR) sign = (-dx + dy) / 2.0;
         else if (sender == HandleBL) sign = (dx - dy) / 2.0;
-        else if (sender == HandleBR) sign = (-dx - dy) / 2.0;
+        else sign = (-dx - dy) / 2.0;
 
-        // Scale the movement relative to the image size
         double scale = Math.Min(imageRect.Width, imageRect.Height) / 200.0;
-        double newRadius = Math.Clamp(_dragStartRadius + sign / Math.Max(scale, 0.5), 0, MaxCornerRadius);
+        _currentDragRadius = Math.Clamp(_dragStartRadius + sign / Math.Max(scale, 0.5), 0, MaxCornerRadius);
+        _currentDragRadius = Math.Round(_currentDragRadius);
 
-        ViewModel.CornerRadius = Math.Round(newRadius);
-        RadiusLabelText.Text = $"Radius: {(int)ViewModel.CornerRadius}px";
-
+        // Only update label and handle positions — NO recompose during drag
+        RadiusLabelText.Text = $"Radius: {(int)_currentDragRadius}px";
         PositionHandles();
         e.Handled = true;
     }
@@ -152,9 +154,12 @@ public sealed partial class MainPage : Page
             handle.ReleasePointerCapture(e.Pointer);
 
         _isDraggingHandle = false;
+        DragBorder.Opacity = 0;
         RadiusLabel.Opacity = 0;
 
-        // Check if pointer is still inside preview
+        // Apply the final radius — triggers one recompose
+        ViewModel.CornerRadius = _currentDragRadius;
+
         var pos = e.GetCurrentPoint(PreviewContainer).Position;
         if (pos.X < 0 || pos.Y < 0 || pos.X > PreviewContainer.ActualWidth || pos.Y > PreviewContainer.ActualHeight)
             SetHandlesOpacity(0);
