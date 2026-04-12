@@ -35,35 +35,6 @@
                     </StackPanel>
                 </Button>
 
-                <!-- Screenshot Settings -->
-                <TextBlock Text="Screenshot Settings" Style="{StaticResource SubtitleTextBlockStyle}" />
-
-                <StackPanel Spacing="4">
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="Border Padding: " />
-                        <Run Text="{x:Bind ViewModel.BorderPadding, Mode=OneWay}" />
-                        <Run Text="px" />
-                    </TextBlock>
-                    <Slider
-                        Value="{x:Bind ViewModel.BorderPadding, Mode=TwoWay}"
-                        Minimum="0"
-                        Maximum="200"
-                        StepFrequency="1" />
-                </StackPanel>
-
-                <StackPanel Spacing="4">
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="Corner Radius: " />
-                        <Run Text="{x:Bind ViewModel.CornerRadius, Mode=OneWay}" />
-                        <Run Text="px" />
-                    </TextBlock>
-                    <Slider
-                        Value="{x:Bind ViewModel.CornerRadius, Mode=TwoWay}"
-                        Minimum="0"
-                        Maximum="50"
-                        StepFrequency="1" />
-                </StackPanel>
-
                 <!-- Wallpaper Gradients -->
                 <Grid Margin="0,8,0,0">
                     <Grid.ColumnDefinitions>
@@ -136,9 +107,15 @@
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Right Panel: Preview -->
-        <Grid Grid.Column="1" Grid.Row="0">
+        <!-- Right Panel: Preview + Border Slider -->
+        <Grid Grid.Column="1" Grid.Row="0" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
             <Border
+                Grid.Row="0"
                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
@@ -158,15 +135,80 @@
                             Margin="0,12,0,0" />
                     </StackPanel>
 
-                    <!-- Preview Image -->
-                    <Image
-                        Source="{x:Bind ViewModel.PreviewImage, Mode=OneWay}"
-                        Stretch="Uniform"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+                    <!-- Preview with corner radius handles overlay -->
+                    <Grid
+                        x:Name="PreviewContainer"
+                        Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"
+                        PointerEntered="PreviewContainer_PointerEntered"
+                        PointerExited="PreviewContainer_PointerExited">
+                        <Image
+                            x:Name="PreviewImage"
+                            Source="{x:Bind ViewModel.PreviewImage, Mode=OneWay}"
+                            Stretch="Uniform"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            SizeChanged="PreviewImage_SizeChanged" />
+                        <!-- Corner radius handle overlay -->
+                        <Canvas x:Name="HandleCanvas" IsHitTestVisible="True">
+                            <!-- Top-left handle -->
+                            <Ellipse x:Name="HandleTL" Width="12" Height="12"
+                                     Fill="{ThemeResource AccentFillColorDefaultBrush}"
+                                     Stroke="White" StrokeThickness="1.5"
+                                     Opacity="0"
+                                     PointerPressed="Handle_PointerPressed"
+                                     PointerMoved="Handle_PointerMoved"
+                                     PointerReleased="Handle_PointerReleased" />
+                            <!-- Top-right handle -->
+                            <Ellipse x:Name="HandleTR" Width="12" Height="12"
+                                     Fill="{ThemeResource AccentFillColorDefaultBrush}"
+                                     Stroke="White" StrokeThickness="1.5"
+                                     Opacity="0"
+                                     PointerPressed="Handle_PointerPressed"
+                                     PointerMoved="Handle_PointerMoved"
+                                     PointerReleased="Handle_PointerReleased" />
+                            <!-- Bottom-left handle -->
+                            <Ellipse x:Name="HandleBL" Width="12" Height="12"
+                                     Fill="{ThemeResource AccentFillColorDefaultBrush}"
+                                     Stroke="White" StrokeThickness="1.5"
+                                     Opacity="0"
+                                     PointerPressed="Handle_PointerPressed"
+                                     PointerMoved="Handle_PointerMoved"
+                                     PointerReleased="Handle_PointerReleased" />
+                            <!-- Bottom-right handle -->
+                            <Ellipse x:Name="HandleBR" Width="12" Height="12"
+                                     Fill="{ThemeResource AccentFillColorDefaultBrush}"
+                                     Stroke="White" StrokeThickness="1.5"
+                                     Opacity="0"
+                                     PointerPressed="Handle_PointerPressed"
+                                     PointerMoved="Handle_PointerMoved"
+                                     PointerReleased="Handle_PointerReleased" />
+                        </Canvas>
+                        <!-- Corner radius label (shown while dragging) -->
+                        <Border x:Name="RadiusLabel"
+                                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                CornerRadius="4" Padding="8,4"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Opacity="0" IsHitTestVisible="False">
+                            <TextBlock x:Name="RadiusLabelText" FontSize="13" />
+                        </Border>
+                    </Grid>
                 </Grid>
             </Border>
+
+            <!-- Border Padding Slider -->
+            <StackPanel Grid.Row="1" Spacing="4"
+                        Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
+                    <Run Text="Border Padding: " />
+                    <Run Text="{x:Bind ViewModel.BorderPadding, Mode=OneWay}" />
+                    <Run Text="px" />
+                </TextBlock>
+                <Slider
+                    Value="{x:Bind ViewModel.BorderPadding, Mode=TwoWay}"
+                    Minimum="0"
+                    Maximum="200"
+                    StepFrequency="1" />
+            </StackPanel>
         </Grid>
 
         <!-- Bottom Bar: Status + Export Buttons -->
