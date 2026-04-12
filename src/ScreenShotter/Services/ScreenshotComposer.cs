@@ -1,49 +1,40 @@
-using ScreenShotter.Models;
 using SkiaSharp;
-using Windows.UI;
 
 namespace ScreenShotter.Services;
 
 public static class ScreenshotComposer
 {
     public static SKBitmap Compose(
-        SKBitmap windowCapture,
-        Color gradientStartColor,
-        Color gradientEndColor,
-        double gradientAngle,
+        SKBitmap fullCapture,
+        SKRectI windowRect,
         int borderPadding,
         float cornerRadius)
     {
-        int totalWidth = windowCapture.Width + borderPadding * 2;
-        int totalHeight = windowCapture.Height + borderPadding * 2;
+        // Calculate crop region: window rect expanded by padding, clamped to bitmap bounds
+        int cropLeft = Math.Max(windowRect.Left - borderPadding, 0);
+        int cropTop = Math.Max(windowRect.Top - borderPadding, 0);
+        int cropRight = Math.Min(windowRect.Right + borderPadding, fullCapture.Width);
+        int cropBottom = Math.Min(windowRect.Bottom + borderPadding, fullCapture.Height);
 
-        // Render gradient background
-        using var gradientBg = GradientService.RenderFromColors(
-            gradientStartColor, gradientEndColor, gradientAngle, totalWidth, totalHeight);
+        int cropW = cropRight - cropLeft;
+        int cropH = cropBottom - cropTop;
+        if (cropW <= 0 || cropH <= 0)
+            return fullCapture.Copy();
 
-        var result = new SKBitmap(totalWidth, totalHeight);
+        var result = new SKBitmap(cropW, cropH);
         using var canvas = new SKCanvas(result);
 
-        // Draw gradient background
-        canvas.DrawBitmap(gradientBg, 0, 0);
-
-        // Draw window capture with optional corner radius
-        var destRect = new SKRect(borderPadding, borderPadding,
-            borderPadding + windowCapture.Width, borderPadding + windowCapture.Height);
+        // Draw the cropped region
+        var srcRect = new SKRectI(cropLeft, cropTop, cropRight, cropBottom);
+        var destRect = new SKRect(0, 0, cropW, cropH);
 
         if (cornerRadius > 0)
         {
-            // Clip to rounded rect, then draw
             var rrect = new SKRoundRect(destRect, cornerRadius, cornerRadius);
-            canvas.Save();
             canvas.ClipRoundRect(rrect, antialias: true);
-            canvas.DrawBitmap(windowCapture, destRect);
-            canvas.Restore();
         }
-        else
-        {
-            canvas.DrawBitmap(windowCapture, destRect);
-        }
+
+        canvas.DrawBitmap(fullCapture, srcRect, destRect);
 
         return result;
     }

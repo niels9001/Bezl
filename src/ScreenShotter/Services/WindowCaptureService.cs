@@ -92,6 +92,18 @@ public static partial class WindowCaptureService
         public BITMAPINFOHEADER bmiHeader;
     }
 
+    private const int MAX_BUFFER = 200; // max padding the user can set
+
+    [LibraryImport("user32.dll")]
+    private static partial int GetSystemMetrics(int nIndex);
+
+    private const int SM_CXSCREEN = 0;
+    private const int SM_CYSCREEN = 1;
+    private const int SM_XVIRTUALSCREEN = 76;
+    private const int SM_YVIRTUALSCREEN = 77;
+    private const int SM_CXVIRTUALSCREEN = 78;
+    private const int SM_CYVIRTUALSCREEN = 79;
+
     public static async Task<CaptureResult?> CaptureWithPickerAsync()
     {
         var picker = new GraphicsCapturePicker();
@@ -102,16 +114,16 @@ public static partial class WindowCaptureService
         if (item is null)
             return null;
 
-        // Try to find the HWND to capture the screen region including window shadow
+        // Try to find the HWND to capture the screen region including shadow + buffer
         var targetHwnd = FindWindowByTitle(item.DisplayName);
         if (targetHwnd != nint.Zero)
         {
-            var result = CaptureScreenRegion(targetHwnd, item.DisplayName);
+            var result = CaptureScreenRegionWithBuffer(targetHwnd, item.DisplayName);
             if (result is not null)
                 return result;
         }
 
-        // Fallback to item-based capture (without shadow)
+        // Fallback to item-based capture (without shadow/buffer)
         return await CaptureItemAsync(item);
     }
 
@@ -150,41 +162,62 @@ public static partial class WindowCaptureService
         return found;
     }
 
-    private static CaptureResult? CaptureScreenRegion(nint targetHwnd, string displayName)
+    private static CaptureResult? CaptureScreenRegionWithBuffer(nint targetHwnd, string displayName)
     {
-        if (!GetWindowRect(targetHwnd, out var rect))
+        if (!GetWindowRect(targetHwnd, out var windowRect))
             return null;
 
-        int width = rect.Right - rect.Left;
-        int height = rect.Bottom - rect.Top;
-        if (width <= 0 || height <= 0)
+        int winW = windowRect.Right - windowRect.Left;
+        int winH = windowRect.Bottom - windowRect.Top;
+        if (winW <= 0 || winH <= 0)
             return null;
+
+        // Get virtual screen bounds (all monitors)
+        int vsLeft = GetSystemMetrics(SM_XVIRTUALSCREEN);
+        int vsTop = GetSystemMetrics(SM_YVIRTUALSCREEN);
+        int vsRight = vsLeft + GetSystemMetrics(SM_CXVIRTUALSCREEN);
+        int vsBottom = vsTop + GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+        // Expand window rect by MAX_BUFFER, clamped to screen bounds
+        int captureLeft = Math.Max(windowRect.Left - MAX_BUFFER, vsLeft);
+        int captureTop = Math.Max(windowRect.Top - MAX_BUFFER, vsTop);
+        int captureRight = Math.Min(windowRect.Right + MAX_BUFFER, vsRight);
+        int captureBottom = Math.Min(windowRect.Bottom + MAX_BUFFER, vsBottom);
+
+        int captureW = captureRight - captureLeft;
+        int captureH = captureBottom - captureTop;
+        if (captureW <= 0 || captureH <= 0)
+            return null;
+
+        // The window's rect within the captured bitmap
+        var windowRectInBitmap = new SKRectI(
+            windowRect.Left - captureLeft,
+            windowRect.Top - captureTop,
+            windowRect.Right - captureLeft,
+            windowRect.Bottom - captureTop);
 
         var screenDc = GetDC(nint.Zero);
         var memDc = CreateCompatibleDC(screenDc);
-        var hBitmap = CreateCompatibleBitmap(screenDc, width, height);
+        var hBitmap = CreateCompatibleBitmap(screenDc, captureW, captureH);
         var oldBitmap = SelectObject(memDc, hBitmap);
 
-        BitBlt(memDc, 0, 0, width, height, screenDc, rect.Left, rect.Top, SRCCOPY);
+        BitBlt(memDc, 0, 0, captureW, captureH, screenDc, captureLeft, captureTop, SRCCOPY);
 
-        // Read pixels into an SKBitmap
         var bmi = new BITMAPINFO
         {
             bmiHeader = new BITMAPINFOHEADER
             {
                 biSize = (uint)Marshal.SizeOf<BITMAPINFOHEADER>(),
-                biWidth = width,
-                biHeight = -height, // top-down
+                biWidth = captureW,
+                biHeight = -captureH, // top-down
                 biPlanes = 1,
                 biBitCount = 32,
                 biCompression = BI_RGB
             }
         };
 
-        var skBitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
-        GetDIBits(memDc, hBitmap, 0, (uint)height, skBitmap.GetPixels(), ref bmi, DIB_RGB_COLORS);
-
-        // Ensure fully opaque (screen capture has A=0 for BGRA)
+        var skBitmap = new SKBitmap(captureW, captureH, SKColorType.Bgra8888, SKAlphaType.Premul);
+        GetDIBits(memDc, hBitmap, 0, (uint)captureH, skBitmap.GetPixels(), ref bmi, DIB_RGB_COLORS);
         MakeOpaque(skBitmap);
 
         SelectObject(memDc, oldBitmap);
@@ -192,7 +225,7 @@ public static partial class WindowCaptureService
         DeleteDC(memDc);
         ReleaseDC(nint.Zero, screenDc);
 
-        return new CaptureResult(skBitmap, displayName);
+        return new CaptureResult(skBitmap, windowRectInBitmap, displayName);
     }
 
     private static void MakeOpaque(SKBitmap bitmap)
@@ -268,7 +301,9 @@ public static partial class WindowCaptureService
             frame.Dispose();
             framePool.Dispose();
 
-            return new CaptureResult(copy, item.DisplayName);
+            // Fallback: entire bitmap IS the window (no buffer)
+            var fullRect = new SKRectI(0, 0, copy.Width, copy.Height);
+            return new CaptureResult(copy, fullRect, item.DisplayName);
         }
         finally
         {

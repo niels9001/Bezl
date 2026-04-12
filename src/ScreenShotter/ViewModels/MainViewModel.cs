@@ -18,7 +18,7 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private double _cornerRadius = 0;
 
-    // Gradient settings
+    // Gradient settings (only for wallpaper, not for preview)
     [ObservableProperty]
     private Color _gradientStartColor = Color.FromArgb(255, 255, 154, 0);
 
@@ -35,7 +35,7 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private BitmapImage? _previewImage;
 
-    // Gradient preview
+    // Gradient preview swatch
     [ObservableProperty]
     private BitmapImage? _gradientPreview;
 
@@ -49,7 +49,7 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private string _statusText = "Ready — click \"Capture Window\" to start";
 
-    private SKBitmap? _capturedBitmap;
+    private CaptureResult? _captureResult;
     private SKBitmap? _composedBitmap;
 
     public GradientDefinition[] GradientPresets => GradientDefinition.Presets;
@@ -59,11 +59,14 @@ public partial class MainPageViewModel : ObservableObject
         _ = UpdateGradientPreviewAsync();
     }
 
+    // Only padding and corner radius affect the preview
     partial void OnBorderPaddingChanged(int value) => _ = RecomposeAsync();
     partial void OnCornerRadiusChanged(double value) => _ = RecomposeAsync();
-    partial void OnGradientStartColorChanged(Color value) => _ = UpdateGradientPreviewAndRecomposeAsync();
-    partial void OnGradientEndColorChanged(Color value) => _ = UpdateGradientPreviewAndRecomposeAsync();
-    partial void OnGradientAngleChanged(double value) => _ = UpdateGradientPreviewAndRecomposeAsync();
+
+    // Gradient changes only update the wallpaper swatch
+    partial void OnGradientStartColorChanged(Color value) => _ = UpdateGradientPreviewAsync();
+    partial void OnGradientEndColorChanged(Color value) => _ = UpdateGradientPreviewAsync();
+    partial void OnGradientAngleChanged(double value) => _ = UpdateGradientPreviewAsync();
 
     [RelayCommand]
     private void SelectPreset(GradientDefinition preset)
@@ -89,8 +92,8 @@ public partial class MainPageViewModel : ObservableObject
                 return;
             }
 
-            _capturedBitmap?.Dispose();
-            _capturedBitmap = result.Bitmap;
+            _captureResult?.Dispose();
+            _captureResult = result;
             HasCapture = true;
             StatusText = $"Captured: {result.WindowTitle}";
 
@@ -153,12 +156,6 @@ public partial class MainPageViewModel : ObservableObject
         }
     }
 
-    private async Task UpdateGradientPreviewAndRecomposeAsync()
-    {
-        await UpdateGradientPreviewAsync();
-        await RecomposeAsync();
-    }
-
     private async Task UpdateGradientPreviewAsync()
     {
         try
@@ -175,16 +172,14 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task RecomposeAsync()
     {
-        if (_capturedBitmap is null) return;
+        if (_captureResult is null) return;
 
         try
         {
             _composedBitmap?.Dispose();
             _composedBitmap = ScreenshotComposer.Compose(
-                _capturedBitmap,
-                GradientStartColor,
-                GradientEndColor,
-                GradientAngle,
+                _captureResult.Bitmap,
+                _captureResult.WindowRect,
                 BorderPadding,
                 (float)CornerRadius);
 
