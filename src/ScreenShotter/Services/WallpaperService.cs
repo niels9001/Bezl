@@ -34,12 +34,12 @@ public static partial class WallpaperService
         using var bitmap = GradientService.Render(gradient, screenW, screenH);
         var wallpaperPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "ScreenShotter", "wallpaper.bmp");
+            "ScreenShotter", "wallpaper.png");
 
         Directory.CreateDirectory(Path.GetDirectoryName(wallpaperPath)!);
 
         using var image = SKImage.FromBitmap(bitmap);
-        using var data = image.Encode(SKEncodedImageFormat.Bmp, 100);
+        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
         using var fs = File.Create(wallpaperPath);
         data.SaveTo(fs);
 
