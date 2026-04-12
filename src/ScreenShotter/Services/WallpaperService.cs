@@ -41,17 +41,25 @@ public static partial class WallpaperService
             screenH = 1080;
         }
 
-        using var bitmap = GradientService.Render(gradient, screenW, screenH);
         var wallpaperPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "ScreenShotter", "wallpaper.jpg");
 
         Directory.CreateDirectory(Path.GetDirectoryName(wallpaperPath)!);
 
-        using var image = SKImage.FromBitmap(bitmap);
-        using var data = image.Encode(SKEncodedImageFormat.Jpeg, 95);
-        using var fs = File.Create(wallpaperPath);
-        data.SaveTo(fs);
+        // Render and save — must fully close the file before SystemParametersInfo reads it
+        using (var bitmap = GradientService.Render(gradient, screenW, screenH))
+        using (var image = SKImage.FromBitmap(bitmap))
+        using (var data = image.Encode(SKEncodedImageFormat.Jpeg, 95))
+        {
+            if (data is null)
+                throw new InvalidOperationException("Failed to encode gradient image");
+
+            using (var fs = File.Create(wallpaperPath))
+            {
+                data.SaveTo(fs);
+            }
+        }
 
         // Set wallpaper style to "Fill" (style=10, tileWallpaper=0)
         using var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);

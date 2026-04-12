@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using ScreenShotter.Helpers;
 using ScreenShotter.Models;
 using ScreenShotter.Services;
@@ -14,6 +15,7 @@ public sealed partial class GradientEditorDialog : ContentDialog
     public GradientEditorDialog()
     {
         InitializeComponent();
+        Loaded += (_, _) => UpdateSwatchesAndPreview();
     }
 
     public GradientEditorDialog(GradientDefinition existing) : this()
@@ -42,9 +44,7 @@ public sealed partial class GradientEditorDialog : ContentDialog
     {
         var name = NameBox.Text.Trim();
         if (string.IsNullOrEmpty(name))
-        {
             name = "Untitled";
-        }
 
         Result = new GradientDefinition(
             name,
@@ -56,6 +56,19 @@ public sealed partial class GradientEditorDialog : ContentDialog
     private void OnColorOrAngleChanged(object sender, object args)
     {
         AngleLabel.Text = $"Angle: {(int)AngleSlider.Value}°";
+        UpdateSwatchesAndPreview();
+    }
+
+    private void UpdateSwatchesAndPreview()
+    {
+        var startColor = StartColorPicker.Color;
+        var endColor = EndColorPicker.Color;
+
+        StartColorSwatch.Background = new SolidColorBrush(
+            Microsoft.UI.ColorHelper.FromArgb(startColor.A, startColor.R, startColor.G, startColor.B));
+        EndColorSwatch.Background = new SolidColorBrush(
+            Microsoft.UI.ColorHelper.FromArgb(endColor.A, endColor.R, endColor.G, endColor.B));
+
         UpdatePreview();
     }
 

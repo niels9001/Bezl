@@ -20,6 +20,7 @@ public sealed partial class MainPage : Page
         if (sender is Button button && button.Tag is GradientItem item)
         {
             ViewModel.SelectGradientCommand.Execute(item);
+            ViewModel.SetAsWallpaperCommand.Execute(null);
         }
     }
 
@@ -38,15 +39,6 @@ public sealed partial class MainPage : Page
         if (sender is MenuFlyoutItem item && item.Tag is GradientItem gradient)
         {
             await ViewModel.EditGradientCommand.ExecuteAsync(gradient);
-        }
-    }
-
-    private void SetWallpaper_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is MenuFlyoutItem item && item.Tag is GradientItem gradient)
-        {
-            ViewModel.SelectGradientCommand.Execute(gradient);
-            ViewModel.SetAsWallpaperCommand.Execute(null);
         }
     }
 

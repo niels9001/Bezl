@@ -13,47 +13,66 @@
     mc:Ignorable="d">
 
     <StackPanel MinWidth="400" Spacing="16">
-        <!--  Gradient Preview  -->
+        <!-- Gradient Preview -->
         <Border Height="120" CornerRadius="8">
             <Image x:Name="GradientPreviewImage" Stretch="Fill" />
         </Border>
 
-        <!--  Name  -->
+        <!-- Name -->
         <TextBox
             x:Name="NameBox"
             Header="Name"
             PlaceholderText="Gradient name" />
 
-        <!--  Start Color  -->
-        <StackPanel Spacing="4">
-            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="Start Color" />
-            <ColorPicker
-                x:Name="StartColorPicker"
-                ColorChanged="OnColorOrAngleChanged"
-                ColorSpectrumShape="Ring"
-                IsAlphaEnabled="False"
-                IsHexInputVisible="True"
-                IsMoreButtonVisible="False" />
-        </StackPanel>
+        <!-- Color buttons row -->
+        <Grid ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <!--  End Color  -->
-        <StackPanel Spacing="4">
-            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="End Color" />
-            <ColorPicker
-                x:Name="EndColorPicker"
-                ColorChanged="OnColorOrAngleChanged"
-                ColorSpectrumShape="Ring"
-                IsAlphaEnabled="False"
-                IsHexInputVisible="True"
-                IsMoreButtonVisible="False" />
-        </StackPanel>
+            <!-- Start Color -->
+            <DropDownButton x:Name="StartColorButton" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Border x:Name="StartColorSwatch" Width="20" Height="20" CornerRadius="4" />
+                    <TextBlock Text="Start Color" VerticalAlignment="Center" />
+                </StackPanel>
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ColorPicker
+                            x:Name="StartColorPicker"
+                            ColorChanged="OnColorOrAngleChanged"
+                            ColorSpectrumShape="Ring"
+                            IsAlphaEnabled="False"
+                            IsHexInputVisible="True"
+                            IsMoreButtonVisible="False" />
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
 
-        <!--  Angle  -->
+            <!-- End Color -->
+            <DropDownButton x:Name="EndColorButton" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Border x:Name="EndColorSwatch" Width="20" Height="20" CornerRadius="4" />
+                    <TextBlock Text="End Color" VerticalAlignment="Center" />
+                </StackPanel>
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ColorPicker
+                            x:Name="EndColorPicker"
+                            ColorChanged="OnColorOrAngleChanged"
+                            ColorSpectrumShape="Ring"
+                            IsAlphaEnabled="False"
+                            IsHexInputVisible="True"
+                            IsMoreButtonVisible="False" />
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </Grid>
+
+        <!-- Angle -->
         <StackPanel Spacing="4">
-            <TextBlock
-                x:Name="AngleLabel"
-                Style="{StaticResource CaptionTextBlockStyle}"
-                Text="Angle: 135°" />
+            <TextBlock x:Name="AngleLabel" Style="{StaticResource CaptionTextBlockStyle}" Text="Angle: 135°" />
             <Slider
                 x:Name="AngleSlider"
                 Maximum="360"

@@ -25,11 +25,15 @@
 
                 <!-- Capture Button -->
                 <Button
-                    Content="📸  Capture Window"
                     Command="{x:Bind ViewModel.CaptureWindowCommand}"
                     HorizontalAlignment="Stretch"
                     Style="{StaticResource AccentButtonStyle}"
-                    Height="40" />
+                    Height="40">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE722;" FontSize="16" />
+                        <TextBlock Text="Capture Window" />
+                    </StackPanel>
+                </Button>
 
                 <!-- Screenshot Settings -->
                 <TextBlock Text="Screenshot Settings" Style="{StaticResource SubtitleTextBlockStyle}" />
@@ -98,11 +102,6 @@
                                                 <FontIcon Glyph="&#xE70F;" />
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
-                                        <MenuFlyoutItem Text="Set as Wallpaper" Click="SetWallpaper_Click" Tag="{x:Bind}">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE7B5;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
                                         <MenuFlyoutSeparator />
                                         <MenuFlyoutItem Text="Delete" Click="DeleteGradient_Click" Tag="{x:Bind}">
                                             <MenuFlyoutItem.Icon>
@@ -133,14 +132,6 @@
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
-
-                <!-- Set as Wallpaper -->
-                <Button
-                    Content="🖼️  Set as Wallpaper"
-                    Command="{x:Bind ViewModel.SetAsWallpaperCommand}"
-                    HorizontalAlignment="Stretch"
-                    Height="36"
-                    Margin="0,4,0,0" />
 
             </StackPanel>
         </ScrollViewer>
@@ -194,15 +185,23 @@
 
             <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
                 <Button
-                    Content="📋  Copy to Clipboard"
                     Command="{x:Bind ViewModel.CopyToClipboardCommand}"
                     IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"
-                    Height="36" />
+                    Height="36">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon Glyph="&#xE8C8;" FontSize="14" />
+                        <TextBlock Text="Copy to Clipboard" />
+                    </StackPanel>
+                </Button>
                 <Button
-                    Content="💾  Save to File"
                     Command="{x:Bind ViewModel.SaveToFileCommand}"
                     IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"
-                    Height="36" />
+                    Height="36">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon Glyph="&#xE74E;" FontSize="14" />
+                        <TextBlock Text="Save to File" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>
