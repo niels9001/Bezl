@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="ScreenShotter.GradientEditorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Edit Gradient"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    PrimaryButtonText="Save"
+    mc:Ignorable="d">
+
+    <StackPanel MinWidth="400" Spacing="16">
+        <!--  Gradient Preview  -->
+        <Border Height="120" CornerRadius="8">
+            <Image x:Name="GradientPreviewImage" Stretch="Fill" />
+        </Border>
+
+        <!--  Name  -->
+        <TextBox
+            x:Name="NameBox"
+            Header="Name"
+            PlaceholderText="Gradient name" />
+
+        <!--  Start Color  -->
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="Start Color" />
+            <ColorPicker
+                x:Name="StartColorPicker"
+                ColorChanged="OnColorOrAngleChanged"
+                ColorSpectrumShape="Ring"
+                IsAlphaEnabled="False"
+                IsHexInputVisible="True"
+                IsMoreButtonVisible="False" />
+        </StackPanel>
+
+        <!--  End Color  -->
+        <StackPanel Spacing="4">
+            <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="End Color" />
+            <ColorPicker
+                x:Name="EndColorPicker"
+                ColorChanged="OnColorOrAngleChanged"
+                ColorSpectrumShape="Ring"
+                IsAlphaEnabled="False"
+                IsHexInputVisible="True"
+                IsMoreButtonVisible="False" />
+        </StackPanel>
+
+        <!--  Angle  -->
+        <StackPanel Spacing="4">
+            <TextBlock
+                x:Name="AngleLabel"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="Angle: 135°" />
+            <Slider
+                x:Name="AngleSlider"
+                Maximum="360"
+                Minimum="0"
+                StepFrequency="1"
+                ValueChanged="OnColorOrAngleChanged"
+                Value="135" />
+        </StackPanel>
+    </StackPanel>
+</ContentDialog>

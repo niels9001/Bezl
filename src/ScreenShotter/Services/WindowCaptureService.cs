@@ -60,6 +60,11 @@ public static partial class WindowCaptureService
 
     private delegate bool EnumWindowsProc(nint hWnd, nint lParam);
 
+    [LibraryImport("dwmapi.dll")]
+    private static partial int DwmGetWindowAttribute(nint hwnd, uint dwAttribute, out RECT pvAttribute, int cbAttribute);
+
+    private const uint DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+
     private const uint SRCCOPY = 0x00CC0020;
     private const uint DIB_RGB_COLORS = 0;
     private const int BI_RGB = 0;
@@ -167,6 +172,13 @@ public static partial class WindowCaptureService
         if (!GetWindowRect(targetHwnd, out var windowRect))
             return null;
 
+        // Get the VISUAL bounds (without invisible DWM borders) for equal padding
+        RECT visualRect;
+        int hr = DwmGetWindowAttribute(targetHwnd, DWMWA_EXTENDED_FRAME_BOUNDS,
+            out visualRect, Marshal.SizeOf<RECT>());
+        if (hr != 0)
+            visualRect = windowRect; // fallback
+
         int winW = windowRect.Right - windowRect.Left;
         int winH = windowRect.Bottom - windowRect.Top;
         if (winW <= 0 || winH <= 0)
@@ -178,7 +190,7 @@ public static partial class WindowCaptureService
         int vsRight = vsLeft + GetSystemMetrics(SM_CXVIRTUALSCREEN);
         int vsBottom = vsTop + GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
-        // Expand window rect by MAX_BUFFER, clamped to screen bounds
+        // Expand from the full window rect (includes shadow) by MAX_BUFFER
         int captureLeft = Math.Max(windowRect.Left - MAX_BUFFER, vsLeft);
         int captureTop = Math.Max(windowRect.Top - MAX_BUFFER, vsTop);
         int captureRight = Math.Min(windowRect.Right + MAX_BUFFER, vsRight);
@@ -189,12 +201,12 @@ public static partial class WindowCaptureService
         if (captureW <= 0 || captureH <= 0)
             return null;
 
-        // The window's rect within the captured bitmap
+        // Use the VISUAL rect for the WindowRect (ensures equal padding on all sides)
         var windowRectInBitmap = new SKRectI(
-            windowRect.Left - captureLeft,
-            windowRect.Top - captureTop,
-            windowRect.Right - captureLeft,
-            windowRect.Bottom - captureTop);
+            visualRect.Left - captureLeft,
+            visualRect.Top - captureTop,
+            visualRect.Right - captureLeft,
+            visualRect.Bottom - captureTop);
 
         var screenDc = GetDC(nint.Zero);
         var memDc = CreateCompatibleDC(screenDc);

@@ -60,65 +60,76 @@
                         StepFrequency="1" />
                 </StackPanel>
 
-                <!-- Gradient Settings -->
-                <TextBlock Text="Gradient" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,8,0,0" />
+                <!-- Wallpaper Gradients -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Wallpaper Gradients" Style="{StaticResource SubtitleTextBlockStyle}" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" Click="AddGradient_Click" ToolTipService.ToolTip="Add new gradient" Padding="6">
+                        <FontIcon Glyph="&#xE710;" FontSize="14" />
+                    </Button>
+                </Grid>
 
-                <!-- Gradient Preview -->
-                <Border CornerRadius="8" Height="100">
-                    <Image Source="{x:Bind ViewModel.GradientPreview, Mode=OneWay}" Stretch="Fill" />
-                </Border>
-
-                <StackPanel Spacing="4">
-                    <TextBlock Text="Start Color" Style="{StaticResource CaptionTextBlockStyle}" />
-                    <ColorPicker
-                        Color="{x:Bind ViewModel.GradientStartColor, Mode=TwoWay}"
-                        ColorSpectrumShape="Ring"
-                        IsAlphaEnabled="False"
-                        IsMoreButtonVisible="False"
-                        IsHexInputVisible="True" />
-                </StackPanel>
-
-                <StackPanel Spacing="4">
-                    <TextBlock Text="End Color" Style="{StaticResource CaptionTextBlockStyle}" />
-                    <ColorPicker
-                        Color="{x:Bind ViewModel.GradientEndColor, Mode=TwoWay}"
-                        ColorSpectrumShape="Ring"
-                        IsAlphaEnabled="False"
-                        IsMoreButtonVisible="False"
-                        IsHexInputVisible="True" />
-                </StackPanel>
-
-                <StackPanel Spacing="4">
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="Angle: " />
-                        <Run Text="{x:Bind ViewModel.GradientAngle, Mode=OneWay}" />
-                        <Run Text="°" />
-                    </TextBlock>
-                    <Slider
-                        Value="{x:Bind ViewModel.GradientAngle, Mode=TwoWay}"
-                        Minimum="0"
-                        Maximum="360"
-                        StepFrequency="1" />
-                </StackPanel>
-
-                <!-- Gradient Presets -->
-                <TextBlock Text="Presets" Style="{StaticResource CaptionTextBlockStyle}" />
-                <ItemsRepeater ItemsSource="{x:Bind ViewModel.GradientPresets}">
+                <!-- Gradient Grid -->
+                <ItemsRepeater ItemsSource="{x:Bind ViewModel.Gradients}">
                     <ItemsRepeater.Layout>
                         <UniformGridLayout
-                            MinItemWidth="130"
+                            MinItemWidth="140"
                             MinColumnSpacing="8"
-                            MinRowSpacing="8" />
+                            MinRowSpacing="8"
+                            ItemsStretch="Fill" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="models:GradientDefinition">
+                        <DataTemplate x:DataType="models:GradientItem">
                             <Button
                                 HorizontalAlignment="Stretch"
-                                HorizontalContentAlignment="Center"
-                                Content="{x:Bind Name}"
+                                HorizontalContentAlignment="Stretch"
+                                Padding="0"
+                                CornerRadius="8"
                                 Tag="{x:Bind}"
-                                Click="PresetButton_Click"
-                                Padding="8,6" />
+                                Click="GradientCard_Click"
+                                RightTapped="GradientCard_RightTapped">
+                                <Button.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Edit" Click="EditGradient_Click" Tag="{x:Bind}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE70F;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutItem Text="Set as Wallpaper" Click="SetWallpaper_Click" Tag="{x:Bind}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE7B5;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                        <MenuFlyoutSeparator />
+                                        <MenuFlyoutItem Text="Delete" Click="DeleteGradient_Click" Tag="{x:Bind}">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE74D;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Button.ContextFlyout>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="70" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <!-- Gradient swatch -->
+                                    <Border Grid.Row="0" CornerRadius="8,8,0,0">
+                                        <Image Source="{x:Bind Preview, Mode=OneWay}" Stretch="Fill" />
+                                    </Border>
+                                    <!-- Name -->
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Text="{x:Bind Name, Mode=OneWay}"
+                                        HorizontalAlignment="Center"
+                                        Padding="4,6"
+                                        FontSize="12"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Grid>
+                            </Button>
                         </DataTemplate>
                     </ItemsRepeater.ItemTemplate>
                 </ItemsRepeater>
@@ -129,7 +140,7 @@
                     Command="{x:Bind ViewModel.SetAsWallpaperCommand}"
                     HorizontalAlignment="Stretch"
                     Height="36"
-                    Margin="0,8,0,0" />
+                    Margin="0,4,0,0" />
 
             </StackPanel>
         </ScrollViewer>

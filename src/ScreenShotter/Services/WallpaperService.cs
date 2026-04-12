@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 using ScreenShotter.Models;
 using SkiaSharp;
 
@@ -15,15 +16,24 @@ public static partial class WallpaperService
     private static partial bool SystemParametersInfo(uint uiAction, uint uiParam, string pvParam, uint fWinIni);
 
     [LibraryImport("user32.dll")]
-    private static partial int GetSystemMetrics(int nIndex);
+    private static partial nint GetDC(nint hWnd);
 
-    private const int SM_CXSCREEN = 0;
-    private const int SM_CYSCREEN = 1;
+    [LibraryImport("user32.dll")]
+    private static partial int ReleaseDC(nint hWnd, nint hDC);
+
+    [LibraryImport("gdi32.dll")]
+    private static partial int GetDeviceCaps(nint hdc, int index);
+
+    private const int DESKTOPHORZRES = 118; // physical width
+    private const int DESKTOPVERTRES = 117; // physical height
 
     public static void SetGradientAsWallpaper(GradientDefinition gradient)
     {
-        int screenW = GetSystemMetrics(SM_CXSCREEN);
-        int screenH = GetSystemMetrics(SM_CYSCREEN);
+        // Get physical screen resolution (not logical/DPI-scaled)
+        var screenDc = GetDC(nint.Zero);
+        int screenW = GetDeviceCaps(screenDc, DESKTOPHORZRES);
+        int screenH = GetDeviceCaps(screenDc, DESKTOPVERTRES);
+        ReleaseDC(nint.Zero, screenDc);
 
         if (screenW <= 0 || screenH <= 0)
         {
@@ -34,14 +44,22 @@ public static partial class WallpaperService
         using var bitmap = GradientService.Render(gradient, screenW, screenH);
         var wallpaperPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "ScreenShotter", "wallpaper.png");
+            "ScreenShotter", "wallpaper.jpg");
 
         Directory.CreateDirectory(Path.GetDirectoryName(wallpaperPath)!);
 
         using var image = SKImage.FromBitmap(bitmap);
-        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        using var data = image.Encode(SKEncodedImageFormat.Jpeg, 95);
         using var fs = File.Create(wallpaperPath);
         data.SaveTo(fs);
+
+        // Set wallpaper style to "Fill" (style=10, tileWallpaper=0)
+        using var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
+        if (key is not null)
+        {
+            key.SetValue("WallpaperStyle", "10");
+            key.SetValue("TileWallpaper", "0");
+        }
 
         SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, wallpaperPath, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
     }

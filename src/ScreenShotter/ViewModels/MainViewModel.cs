@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -18,26 +19,9 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private double _cornerRadius = 0;
 
-    // Gradient settings (only for wallpaper, not for preview)
-    [ObservableProperty]
-    private Color _gradientStartColor = Color.FromArgb(255, 255, 154, 0);
-
-    [ObservableProperty]
-    private Color _gradientEndColor = Color.FromArgb(255, 208, 0, 108);
-
-    [ObservableProperty]
-    private double _gradientAngle = 135;
-
-    [ObservableProperty]
-    private string _selectedPresetName = "Sunset";
-
     // Preview image
     [ObservableProperty]
     private BitmapImage? _previewImage;
-
-    // Gradient preview swatch
-    [ObservableProperty]
-    private BitmapImage? _gradientPreview;
 
     // State
     [ObservableProperty]
@@ -49,32 +33,132 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private string _statusText = "Ready — click \"Capture Window\" to start";
 
+    // Gradient collection
+    [ObservableProperty]
+    private GradientItem? _selectedGradient;
+
+    public ObservableCollection<GradientItem> Gradients { get; } = [];
+
     private CaptureResult? _captureResult;
     private SKBitmap? _composedBitmap;
 
-    public GradientDefinition[] GradientPresets => GradientDefinition.Presets;
-
     public MainPageViewModel()
     {
-        _ = UpdateGradientPreviewAsync();
+        LoadGradients();
     }
 
-    // Only padding and corner radius affect the preview
+    private async void LoadGradients()
+    {
+        var definitions = GradientStore.Load();
+        foreach (var def in definitions)
+        {
+            var item = new GradientItem(def);
+            Gradients.Add(item);
+        }
+
+        // Render all previews
+        foreach (var item in Gradients)
+        {
+            await item.RenderPreviewAsync();
+        }
+
+        if (Gradients.Count > 0)
+        {
+            SelectedGradient = Gradients[0];
+            SelectedGradient.IsSelected = true;
+        }
+    }
+
+    private void SaveGradients()
+    {
+        GradientStore.Save(Gradients.Select(g => g.ToDefinition()));
+    }
+
     partial void OnBorderPaddingChanged(int value) => _ = RecomposeAsync();
     partial void OnCornerRadiusChanged(double value) => _ = RecomposeAsync();
 
-    // Gradient changes only update the wallpaper swatch
-    partial void OnGradientStartColorChanged(Color value) => _ = UpdateGradientPreviewAsync();
-    partial void OnGradientEndColorChanged(Color value) => _ = UpdateGradientPreviewAsync();
-    partial void OnGradientAngleChanged(double value) => _ = UpdateGradientPreviewAsync();
+    [RelayCommand]
+    private void SelectGradient(GradientItem item)
+    {
+        if (SelectedGradient is not null)
+            SelectedGradient.IsSelected = false;
+
+        SelectedGradient = item;
+        item.IsSelected = true;
+    }
 
     [RelayCommand]
-    private void SelectPreset(GradientDefinition preset)
+    private async Task EditGradientAsync(GradientItem item)
     {
-        SelectedPresetName = preset.Name;
-        GradientStartColor = preset.StartColor;
-        GradientEndColor = preset.EndColor;
-        GradientAngle = preset.AngleDegrees;
+        var dialog = new GradientEditorDialog(item.ToDefinition())
+        {
+            XamlRoot = App.Window.Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary && dialog.Result is not null)
+        {
+            item.UpdateFrom(dialog.Result);
+            SelectGradient(item);
+            SaveGradients();
+            StatusText = $"Gradient \"{item.Name}\" updated";
+        }
+    }
+
+    [RelayCommand]
+    private async Task AddGradientAsync()
+    {
+        var dialog = GradientEditorDialog.CreateNew();
+        dialog.XamlRoot = App.Window.Content.XamlRoot;
+
+        var result = await dialog.ShowAsync();
+        if (result == Microsoft.UI.Xaml.Controls.ContentDialogResult.Primary && dialog.Result is not null)
+        {
+            var item = new GradientItem(dialog.Result);
+            await item.RenderPreviewAsync();
+            Gradients.Add(item);
+            SelectGradient(item);
+            SaveGradients();
+            StatusText = $"Gradient \"{item.Name}\" added";
+        }
+    }
+
+    [RelayCommand]
+    private void DeleteGradient(GradientItem item)
+    {
+        if (Gradients.Count <= 1)
+        {
+            StatusText = "Cannot delete the last gradient";
+            return;
+        }
+
+        var index = Gradients.IndexOf(item);
+        Gradients.Remove(item);
+
+        if (SelectedGradient == item)
+        {
+            var newIndex = Math.Min(index, Gradients.Count - 1);
+            SelectGradient(Gradients[newIndex]);
+        }
+
+        SaveGradients();
+        StatusText = $"Gradient \"{item.Name}\" deleted";
+    }
+
+    [RelayCommand]
+    private void SetAsWallpaper()
+    {
+        if (SelectedGradient is null) return;
+
+        try
+        {
+            WallpaperService.SetGradientAsWallpaper(SelectedGradient.ToDefinition());
+            StatusText = $"Wallpaper set to \"{SelectedGradient.Name}\"!";
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Failed to set wallpaper: {ex.Message}";
+        }
     }
 
     [RelayCommand]
@@ -110,21 +194,6 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SetAsWallpaper()
-    {
-        try
-        {
-            var gradient = new GradientDefinition("Custom", GradientStartColor, GradientEndColor, GradientAngle);
-            WallpaperService.SetGradientAsWallpaper(gradient);
-            StatusText = "Gradient set as desktop wallpaper!";
-        }
-        catch (Exception ex)
-        {
-            StatusText = $"Failed to set wallpaper: {ex.Message}";
-        }
-    }
-
-    [RelayCommand]
     private async Task CopyToClipboardAsync()
     {
         if (_composedBitmap is null) return;
@@ -153,20 +222,6 @@ public partial class MainPageViewModel : ObservableObject
         catch (Exception ex)
         {
             StatusText = $"Save failed: {ex.Message}";
-        }
-    }
-
-    private async Task UpdateGradientPreviewAsync()
-    {
-        try
-        {
-            using var gradientBitmap = GradientService.RenderFromColors(
-                GradientStartColor, GradientEndColor, GradientAngle, 300, 200);
-            GradientPreview = await gradientBitmap.ToWinUIBitmapAsync();
-        }
-        catch
-        {
-            // Silently ignore rendering errors during initialization
         }
     }
 
