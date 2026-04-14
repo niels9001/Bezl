@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Bezl.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="24,16,24,16" RowSpacing="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header with back button -->
+        <StackPanel Orientation="Horizontal" Spacing="12">
+            <Button
+                x:Name="BackButton"
+                Click="BackButton_Click"
+                Style="{StaticResource SubtleButtonStyle}"
+                ToolTipService.ToolTip="Back">
+                <FontIcon FontSize="14" Glyph="&#xE72B;" />
+            </Button>
+            <TextBlock
+                VerticalAlignment="Center"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Settings" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="600" Margin="0,16,0,0" HorizontalAlignment="Left" Spacing="4">
+
+                <!-- Defaults section -->
+                <TextBlock
+                    Margin="0,0,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Defaults" />
+
+                <!-- Default Padding -->
+                <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <Grid Padding="0,12" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Default padding" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="The border padding applied to new captures" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                <Run Text="{x:Bind DefaultPadding, Mode=OneWay}" /><Run Text="px" />
+                            </TextBlock>
+                        </Grid>
+                    </Expander.Header>
+                    <Slider
+                        Margin="0,8"
+                        Maximum="200"
+                        Minimum="0"
+                        StepFrequency="1"
+                        Value="{x:Bind DefaultPadding, Mode=TwoWay}" />
+                </Expander>
+
+                <!-- Default Corner Radius -->
+                <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <Grid Padding="0,12" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Default corner radius" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="The corner rounding applied to new captures" />
+                            </StackPanel>
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                <Run Text="{x:Bind DefaultCornerRadius, Mode=OneWay}" /><Run Text="px" />
+                            </TextBlock>
+                        </Grid>
+                    </Expander.Header>
+                    <Slider
+                        Margin="0,8"
+                        Maximum="50"
+                        Minimum="0"
+                        StepFrequency="1"
+                        Value="{x:Bind DefaultCornerRadius, Mode=TwoWay}" />
+                </Expander>
+
+                <!-- About section -->
+                <TextBlock
+                    Margin="0,24,0,4"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="About" />
+
+                <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <Grid Padding="0,12" ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ImageIcon
+                                Width="32"
+                                Height="32"
+                                Source="Assets/AppIcon.ico" />
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Bezl" />
+                                <TextBlock
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    Style="{StaticResource CaptionTextBlockStyle}"
+                                    Text="Version 1.0.0" />
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel Spacing="12">
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="Beautiful screenshot borders made easy. Capture any window and frame it with customizable gradient borders and rounded corners."
+                            TextWrapping="Wrap" />
+                        <HyperlinkButton
+                            Content="View on GitHub"
+                            NavigateUri="https://github.com/niels9001/Bezl" />
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                            Style="{StaticResource CaptionTextBlockStyle}"
+                            Text="MIT License — © 2026 Bezl Contributors" />
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
