@@ -1,9 +1,9 @@
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using Vignette.Models;
+using Bezl.Models;
 using SkiaSharp;
 
-namespace Vignette.Services;
+namespace Bezl.Services;
 
 public static partial class WallpaperService
 {
@@ -44,7 +44,7 @@ public static partial class WallpaperService
         // Use the real user profile path (not MSIX-virtualized) so explorer.exe can read it
         var userProfile = Environment.GetEnvironmentVariable("USERPROFILE")
             ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var wallpaperPath = Path.Combine(userProfile, "Pictures", "Vignette", "wallpaper.jpg");
+        var wallpaperPath = Path.Combine(userProfile, "Pictures", "Bezl", "wallpaper.jpg");
 
         Directory.CreateDirectory(Path.GetDirectoryName(wallpaperPath)!);
 

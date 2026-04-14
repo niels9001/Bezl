@@ -1,4 +1,4 @@
-# Vignette
+# Bezl
 
 A beautiful WinUI 3 desktop app for capturing window screenshots with customizable gradient borders and rounded corners.
 
@@ -20,14 +20,14 @@ A beautiful WinUI 3 desktop app for capturing window screenshots with customizab
 ## Building
 
 ```bash
-cd src/Vignette
+cd src/Bezl
 dotnet build
 ```
 
 ## Running
 
 ```bash
-dotnet run --project src/Vignette
+dotnet run --project src/Bezl
 ```
 
 ## How It Works

@@ -1,12 +1,12 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Vignette.Helpers;
-using Vignette.Models;
-using Vignette.Services;
+using Bezl.Helpers;
+using Bezl.Models;
+using Bezl.Services;
 using Windows.UI;
 
-namespace Vignette;
+namespace Bezl;
 
 public sealed partial class GradientEditorDialog : ContentDialog
 {

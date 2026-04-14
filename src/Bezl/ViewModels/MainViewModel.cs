@@ -2,13 +2,13 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Vignette.Helpers;
-using Vignette.Models;
-using Vignette.Services;
+using Bezl.Helpers;
+using Bezl.Models;
+using Bezl.Services;
 using SkiaSharp;
 using Windows.UI;
 
-namespace Vignette.ViewModels;
+namespace Bezl.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {

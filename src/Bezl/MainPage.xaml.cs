@@ -2,11 +2,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Shapes;
-using Vignette.Models;
-using Vignette.ViewModels;
+using Bezl.Models;
+using Bezl.ViewModels;
 using Windows.Foundation;
 
-namespace Vignette;
+namespace Bezl;
 
 public sealed partial class MainPage : Page
 {

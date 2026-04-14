@@ -1,8 +1,8 @@
-using Vignette.Models;
+using Bezl.Models;
 using SkiaSharp;
 using Windows.UI;
 
-namespace Vignette.Services;
+namespace Bezl.Services;
 
 public static class GradientService
 {

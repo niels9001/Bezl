@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "Vignette (Package)": {
+    "Bezl (Package)": {
       "commandName": "MsixPackage"
     },
-    "Vignette (Unpackaged)": {
+    "Bezl (Unpackaged)": {
       "commandName": "Project"
     }
   }

@@ -1,6 +1,6 @@
 using SkiaSharp;
 
-namespace Vignette.Models;
+namespace Bezl.Models;
 
 public sealed class CaptureResult : IDisposable
 {

@@ -1,6 +1,6 @@
 using Windows.UI;
 
-namespace Vignette.Models;
+namespace Bezl.Models;
 
 public record GradientDefinition(
     string Name,

@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Vignette.Models;
+using Bezl.Models;
 using Windows.UI;
 
-namespace Vignette.Services;
+namespace Bezl.Services;
 
 public static class GradientStore
 {
@@ -11,7 +11,7 @@ public static class GradientStore
     private static readonly string StorePath = Path.Combine(
         Environment.GetEnvironmentVariable("USERPROFILE")
             ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-        ".vignette", "gradients.json");
+        ".bezl", "gradients.json");
 
     public static List<GradientDefinition> Load()
     {

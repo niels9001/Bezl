@@ -1,10 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Vignette.Helpers;
-using Vignette.Services;
+using Bezl.Helpers;
+using Bezl.Services;
 using Windows.UI;
 
-namespace Vignette.Models;
+namespace Bezl.Models;
 
 public partial class GradientItem : ObservableObject
 {

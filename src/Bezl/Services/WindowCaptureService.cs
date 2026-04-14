@@ -1,12 +1,12 @@
 using System.Runtime.InteropServices;
-using Vignette.Models;
+using Bezl.Models;
 using SkiaSharp;
 using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX;
 using Windows.Graphics.DirectX.Direct3D11;
 using Microsoft.Graphics.Canvas;
 
-namespace Vignette.Services;
+namespace Bezl.Services;
 
 public static partial class WindowCaptureService
 {
@@ -133,7 +133,7 @@ public static partial class WindowCaptureService
         if (item is null)
             return null;
 
-        // Minimize Vignette after the picker closes so it doesn't appear in the capture
+        // Minimize Bezl after the picker closes so it doesn't appear in the capture
         var presenter = App.Window.AppWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
         presenter?.Minimize();
         await Task.Delay(300);

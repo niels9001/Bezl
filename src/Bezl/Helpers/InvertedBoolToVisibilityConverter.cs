@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
 
-namespace Vignette;
+namespace Bezl;
 
 public sealed class InvertedBoolToVisibilityConverter : IValueConverter
 {
