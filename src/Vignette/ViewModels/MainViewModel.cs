@@ -169,18 +169,7 @@ public partial class MainPageViewModel : ObservableObject
             IsCapturing = true;
             StatusText = "Select a window to capture...";
 
-            // Minimize so Vignette doesn't obscure the target window
-            var presenter = App.Window.AppWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
-            presenter?.Minimize();
-
-            // Small delay to let the minimize animation finish
-            await Task.Delay(300);
-
             var result = await WindowCaptureService.CaptureWithPickerAsync();
-
-            // Restore the window
-            presenter?.Restore();
-
             if (result is null)
             {
                 StatusText = "Capture cancelled";

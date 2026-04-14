@@ -119,17 +119,29 @@ public static partial class WindowCaptureService
         if (item is null)
             return null;
 
-        // Try to find the HWND to capture the screen region including shadow + buffer
-        var targetHwnd = FindWindowByTitle(item.DisplayName);
-        if (targetHwnd != nint.Zero)
-        {
-            var result = CaptureScreenRegionWithBuffer(targetHwnd, item.DisplayName);
-            if (result is not null)
-                return result;
-        }
+        // Minimize Vignette after the picker closes so it doesn't appear in the capture
+        var presenter = App.Window.AppWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+        presenter?.Minimize();
+        await Task.Delay(300);
 
-        // Fallback to item-based capture (without shadow/buffer)
-        return await CaptureItemAsync(item);
+        try
+        {
+            // Try to find the HWND to capture the screen region including shadow + buffer
+            var targetHwnd = FindWindowByTitle(item.DisplayName);
+            if (targetHwnd != nint.Zero)
+            {
+                var result = CaptureScreenRegionWithBuffer(targetHwnd, item.DisplayName);
+                if (result is not null)
+                    return result;
+            }
+
+            // Fallback to item-based capture (without shadow/buffer)
+            return await CaptureItemAsync(item);
+        }
+        finally
+        {
+            presenter?.Restore();
+        }
     }
 
     private static nint FindWindowByTitle(string title)
