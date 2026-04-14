@@ -173,8 +173,7 @@
             <!--  Right Panel: Preview + Sliders  -->
             <Grid
                 Grid.Column="1"
-                ColumnSpacing="12"
-                RowSpacing="12">
+                ColumnSpacing="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -222,6 +221,7 @@
                 <StackPanel
                     Grid.Row="0"
                     Grid.Column="1"
+                    Margin="0,0,0,12"
                     VerticalAlignment="Center"
                     Spacing="8"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
@@ -256,6 +256,7 @@
                 <Grid
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
+                    Margin="0,12,0,0"
                     HorizontalAlignment="Center"
                     ColumnSpacing="12"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
