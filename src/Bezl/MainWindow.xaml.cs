@@ -24,4 +24,12 @@ public sealed partial class MainWindow : Window
         // Navigate the root frame to the main page on startup.
         RootFrame.Navigate(typeof(MainPage));
     }
+
+    private void AppTitleBar_BackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
+    {
+        if (RootFrame.CanGoBack)
+        {
+            RootFrame.GoBack();
+        }
+    }
 }

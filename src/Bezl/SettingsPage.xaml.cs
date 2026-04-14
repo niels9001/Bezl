@@ -1,5 +1,4 @@
 using Bezl.Services;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
@@ -55,11 +54,5 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             DefaultPadding = DefaultPadding,
             DefaultCornerRadius = DefaultCornerRadius
         });
-    }
-
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-            Frame.GoBack();
     }
 }
