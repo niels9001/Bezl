@@ -1,7 +1,24 @@
+<p align="center">
+  <img src="./.github/assets/BezlIcon.png" alt="Bezl" width="64" />
+</p>
+
 <h1 align="center">Bezl</h1>
 <p align="center">Beautiful screenshot borders made easy</p>
 
+<p align="center">
+  <a style="text-decoration:none" href="https://apps.microsoft.com/detail/9P17D7CZ0PZC?launch=true&mode=full">
+    <picture>
+      <source media="(prefers-color-scheme: light)" srcset="./.github/assets/StoreBadge-dark.png" width="220" />
+      <img src="./.github/assets/StoreBadge-light.png" width="220" />
+    </picture>
+  </a>
+</p>
+
 Bezl lets you create beautiful screenshots in seconds. Pick any open window, and Bezl captures it — then adjust the padding and corner radius to get the perfect framed look. Pair it with a gradient wallpaper backdrop so your window truly shines, and export the result as a polished PNG or straight to your clipboard.
+
+<p align="center">
+  <img src="./.github/assets/Screenshot.png" alt="Bezl screenshot" width="600" />
+</p>
 
 ## ⭐ Features
 
