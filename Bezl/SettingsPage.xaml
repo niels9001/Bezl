@@ -61,7 +61,7 @@
                         </toolkit:SettingsCard.HeaderIcon>
                         <NumberBox
                             Width="120"
-                            Maximum="50"
+                            Maximum="100"
                             Minimum="0"
                             SmallChange="1"
                             SpinButtonPlacementMode="Compact"

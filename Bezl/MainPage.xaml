@@ -171,9 +171,7 @@
             </Grid>
 
             <!--  Right Panel: Preview + Sliders  -->
-            <Grid
-                Grid.Column="1"
-                ColumnSpacing="12">
+            <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -221,7 +219,7 @@
                 <StackPanel
                     Grid.Row="0"
                     Grid.Column="1"
-                    Margin="0,0,0,12"
+                    Margin="12,0,0,0"
                     VerticalAlignment="Center"
                     Spacing="8"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
@@ -237,7 +235,7 @@
                         Height="200"
                         HorizontalAlignment="Center"
                         IsDirectionReversed="True"
-                        Maximum="50"
+                        Maximum="100"
                         Minimum="0"
                         Orientation="Vertical"
                         StepFrequency="1"
