@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using SkiaSharp;
 using Windows.Storage.Streams;
 
-namespace ScreenShotter.Helpers;
+namespace Vignette.Helpers;
 
 public static class ImageExtensions
 {
@@ -26,7 +26,7 @@ public static class ImageExtensions
 
     public static async Task CopyToClipboardAsync(SKBitmap bitmap)
     {
-        var pngData = ScreenShotter.Services.ScreenshotComposer.EncodeToPng(bitmap);
+        var pngData = Vignette.Services.ScreenshotComposer.EncodeToPng(bitmap);
 
         var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
         var stream = new InMemoryRandomAccessStream();
@@ -52,7 +52,7 @@ public static class ImageExtensions
         var file = await savePicker.PickSaveFileAsync();
         if (file is null) return;
 
-        var pngData = ScreenShotter.Services.ScreenshotComposer.EncodeToPng(bitmap);
+        var pngData = Vignette.Services.ScreenshotComposer.EncodeToPng(bitmap);
         await Windows.Storage.FileIO.WriteBytesAsync(file, pngData);
     }
 }

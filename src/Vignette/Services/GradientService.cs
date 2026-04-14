@@ -1,8 +1,8 @@
-using ScreenShotter.Models;
+using Vignette.Models;
 using SkiaSharp;
 using Windows.UI;
 
-namespace ScreenShotter.Services;
+namespace Vignette.Services;
 
 public static class GradientService
 {

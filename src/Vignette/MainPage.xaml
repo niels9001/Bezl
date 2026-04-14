@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="ScreenShotter.MainPage"
+    x:Class="Vignette.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:ScreenShotter"
+    xmlns:local="using:Vignette"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:ScreenShotter.Models"
+    xmlns:models="using:Vignette.Models"
     mc:Ignorable="d">
 
-    <Grid Padding="24" ColumnSpacing="24">
-
-
+    <Grid
+        Padding="24"
+        ColumnSpacing="24"
+        RowSpacing="32">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -27,8 +28,8 @@
                 Command="{x:Bind ViewModel.CaptureWindowCommand}"
                 Style="{StaticResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon FontSize="16" Glyph="&#xE722;" />
-                    <TextBlock Text="Capture" />
+                    <FontIcon FontSize="14" Glyph="&#xE722;" />
+                    <TextBlock Margin="0,-2,0,0" Text="Capture" />
                 </StackPanel>
             </Button>
             <StackPanel
@@ -53,14 +54,14 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" ColumnSpacing="24">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="320" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!--  Left Panel: Controls  -->
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Spacing="20">
+                <StackPanel Spacing="8">
 
                     <!--  Wallpaper Gradients  -->
                     <Grid Margin="0,8,0,0">
@@ -70,7 +71,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock
                             VerticalAlignment="Center"
-                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Style="{StaticResource BodyStrongTextBlockStyle}"
                             Text="Wallpaper gradients" />
                         <Button
                             Grid.Column="1"
@@ -80,9 +81,14 @@
                             <FontIcon FontSize="14" Glyph="&#xE710;" />
                         </Button>
                     </Grid>
+                    <TextBlock
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        Text="Select one of the gradients below to set as a wallpaper"
+                        TextWrapping="Wrap" />
 
                     <!--  Gradient Grid  -->
-                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Gradients}">
+                    <ItemsRepeater Margin="0,12,0,0" ItemsSource="{x:Bind ViewModel.Gradients}">
                         <ItemsRepeater.Layout>
                             <UniformGridLayout
                                 ItemsStretch="Fill"
@@ -265,23 +271,38 @@
                         </Grid>
                     </Grid>
                 </Border>
-
                 <!--  Border Padding Slider  -->
-                <StackPanel
+
+                <Grid
                     Grid.Row="1"
-                    Spacing="4"
+                    HorizontalAlignment="Center"
+                    ColumnSpacing="12"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="Border Padding: " />
-                        <Run Text="{x:Bind ViewModel.BorderPadding, Mode=OneWay}" />
-                        <Run Text="px" />
-                    </TextBlock>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="320" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Glyph="&#xE9A6;"
+                        ToolTipService.ToolTip=" Image padding" />
                     <Slider
+                        Grid.Column="1"
                         Maximum="200"
                         Minimum="0"
                         StepFrequency="1"
                         Value="{x:Bind ViewModel.BorderPadding, Mode=TwoWay}" />
-                </StackPanel>
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}">
+                        <Run Text="{x:Bind ViewModel.BorderPadding, Mode=OneWay}" />
+                        <Run Text="px" />
+                    </TextBlock>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

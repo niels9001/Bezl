@@ -1,6 +1,6 @@
 using SkiaSharp;
 
-namespace ScreenShotter.Models;
+namespace Vignette.Models;
 
 public sealed class CaptureResult : IDisposable
 {

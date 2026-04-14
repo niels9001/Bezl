@@ -1,6 +1,6 @@
 using SkiaSharp;
 
-namespace ScreenShotter.Services;
+namespace Vignette.Services;
 
 public static class ScreenshotComposer
 {

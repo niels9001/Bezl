@@ -1,4 +1,4 @@
-# ScreenShotter
+# Vignette
 
 A beautiful WinUI 3 desktop app for capturing window screenshots with customizable gradient borders and rounded corners.
 
@@ -20,14 +20,14 @@ A beautiful WinUI 3 desktop app for capturing window screenshots with customizab
 ## Building
 
 ```bash
-cd src/ScreenShotter
+cd src/Vignette
 dotnet build
 ```
 
 ## Running
 
 ```bash
-dotnet run --project src/ScreenShotter
+dotnet run --project src/Vignette
 ```
 
 ## How It Works

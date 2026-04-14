@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "ScreenShotter (Package)": {
+    "Vignette (Package)": {
       "commandName": "MsixPackage"
     },
-    "ScreenShotter (Unpackaged)": {
+    "Vignette (Unpackaged)": {
       "commandName": "Project"
     }
   }

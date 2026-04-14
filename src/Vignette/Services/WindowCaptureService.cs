@@ -1,12 +1,12 @@
 using System.Runtime.InteropServices;
-using ScreenShotter.Models;
+using Vignette.Models;
 using SkiaSharp;
 using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX;
 using Windows.Graphics.DirectX.Direct3D11;
 using Microsoft.Graphics.Canvas;
 
-namespace ScreenShotter.Services;
+namespace Vignette.Services;
 
 public static partial class WindowCaptureService
 {

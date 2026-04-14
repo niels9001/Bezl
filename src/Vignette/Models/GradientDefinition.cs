@@ -1,6 +1,6 @@
 using Windows.UI;
 
-namespace ScreenShotter.Models;
+namespace Vignette.Models;
 
 public record GradientDefinition(
     string Name,

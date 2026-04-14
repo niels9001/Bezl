@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ScreenShotter.Models;
+using Vignette.Models;
 using Windows.UI;
 
-namespace ScreenShotter.Services;
+namespace Vignette.Services;
 
 public static class GradientStore
 {
@@ -11,7 +11,7 @@ public static class GradientStore
     private static readonly string StorePath = Path.Combine(
         Environment.GetEnvironmentVariable("USERPROFILE")
             ?? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-        ".screenshotter", "gradients.json");
+        ".vignette", "gradients.json");
 
     public static List<GradientDefinition> Load()
     {

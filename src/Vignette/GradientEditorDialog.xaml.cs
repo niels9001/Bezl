@@ -1,12 +1,12 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using ScreenShotter.Helpers;
-using ScreenShotter.Models;
-using ScreenShotter.Services;
+using Vignette.Helpers;
+using Vignette.Models;
+using Vignette.Services;
 using Windows.UI;
 
-namespace ScreenShotter;
+namespace Vignette;
 
 public sealed partial class GradientEditorDialog : ContentDialog
 {

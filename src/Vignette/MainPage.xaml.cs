@@ -2,11 +2,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Shapes;
-using ScreenShotter.Models;
-using ScreenShotter.ViewModels;
+using Vignette.Models;
+using Vignette.ViewModels;
 using Windows.Foundation;
 
-namespace ScreenShotter;
+namespace Vignette;
 
 public sealed partial class MainPage : Page
 {

@@ -2,13 +2,13 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
-using ScreenShotter.Helpers;
-using ScreenShotter.Models;
-using ScreenShotter.Services;
+using Vignette.Helpers;
+using Vignette.Models;
+using Vignette.Services;
 using SkiaSharp;
 using Windows.UI;
 
-namespace ScreenShotter.ViewModels;
+namespace Vignette.ViewModels;
 
 public partial class MainPageViewModel : ObservableObject
 {
@@ -169,7 +169,18 @@ public partial class MainPageViewModel : ObservableObject
             IsCapturing = true;
             StatusText = "Select a window to capture...";
 
+            // Minimize so Vignette doesn't obscure the target window
+            var presenter = App.Window.AppWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+            presenter?.Minimize();
+
+            // Small delay to let the minimize animation finish
+            await Task.Delay(300);
+
             var result = await WindowCaptureService.CaptureWithPickerAsync();
+
+            // Restore the window
+            presenter?.Restore();
+
             if (result is null)
             {
                 StatusText = "Capture cancelled";

@@ -1,10 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
-using ScreenShotter.Helpers;
-using ScreenShotter.Services;
+using Vignette.Helpers;
+using Vignette.Services;
 using Windows.UI;
 
-namespace ScreenShotter.Models;
+namespace Vignette.Models;
 
 public partial class GradientItem : ObservableObject
 {
