@@ -14,7 +14,7 @@ public partial class MainPageViewModel : ObservableObject
 {
     // Screenshot settings
     [ObservableProperty]
-    private int _borderPadding = 40;
+    private int _borderPadding = 16;
 
     [ObservableProperty]
     private double _cornerRadius = 0;
