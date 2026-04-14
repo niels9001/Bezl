@@ -10,37 +10,38 @@ public record GradientDefinition(
 {
     public static readonly GradientDefinition[] Presets =
     [
-        // Dark & moody
-        new("Obsidian",   Color.FromArgb(255, 15, 15, 20),     Color.FromArgb(255, 45, 45, 55)),
-        new("Charcoal",   Color.FromArgb(255, 30, 30, 35),     Color.FromArgb(255, 60, 60, 70)),
-        new("Midnight",   Color.FromArgb(255, 10, 15, 30),     Color.FromArgb(255, 35, 50, 85)),
-        new("Eclipse",    Color.FromArgb(255, 20, 10, 35),     Color.FromArgb(255, 55, 30, 75)),
-        new("Deep Sea",   Color.FromArgb(255, 10, 20, 35),     Color.FromArgb(255, 20, 60, 80)),
-        new("Ember",      Color.FromArgb(255, 35, 15, 10),     Color.FromArgb(255, 80, 30, 20)),
+        // Colorful (vibrant but tasteful)
+        new("Sunset",     Color.FromArgb(255, 255, 154, 0),    Color.FromArgb(255, 208, 0, 108)),
+        new("Ocean",      Color.FromArgb(255, 0, 180, 219),    Color.FromArgb(255, 0, 119, 182)),
+        new("Aurora",     Color.FromArgb(255, 67, 206, 162),   Color.FromArgb(255, 24, 90, 157)),
+        new("Candy",      Color.FromArgb(255, 224, 0, 254),    Color.FromArgb(255, 142, 45, 226)),
+        new("Dawn",       Color.FromArgb(255, 255, 175, 64),   Color.FromArgb(255, 255, 95, 109)),
+        new("Horizon",    Color.FromArgb(255, 60, 165, 220),   Color.FromArgb(255, 160, 100, 200)),
 
-        // Dark with subtle color
-        new("Storm",      Color.FromArgb(255, 25, 30, 45),     Color.FromArgb(255, 55, 70, 100)),
-        new("Dusk",       Color.FromArgb(255, 40, 25, 50),     Color.FromArgb(255, 80, 50, 90)),
-        new("Slate",      Color.FromArgb(255, 35, 40, 50),     Color.FromArgb(255, 70, 80, 95)),
-        new("Merlot",     Color.FromArgb(255, 50, 20, 30),     Color.FromArgb(255, 90, 40, 55)),
+        // Pastels (wider color range)
+        new("Rose",       Color.FromArgb(255, 240, 180, 190),  Color.FromArgb(255, 195, 140, 165)),
+        new("Lavender",   Color.FromArgb(255, 210, 185, 235),  Color.FromArgb(255, 160, 140, 210)),
+        new("Powder",     Color.FromArgb(255, 180, 210, 240),  Color.FromArgb(255, 135, 170, 215)),
+        new("Mint",       Color.FromArgb(255, 170, 230, 200),  Color.FromArgb(255, 130, 190, 165)),
+        new("Peach",      Color.FromArgb(255, 245, 200, 170),  Color.FromArgb(255, 215, 160, 135)),
+        new("Blush",      Color.FromArgb(255, 235, 180, 210),  Color.FromArgb(255, 190, 145, 180)),
 
         // Muted & earthy
-        new("Clay",       Color.FromArgb(255, 140, 100, 80),   Color.FromArgb(255, 100, 70, 60)),
-        new("Moss",       Color.FromArgb(255, 60, 80, 65),     Color.FromArgb(255, 90, 115, 85)),
-        new("Fog",        Color.FromArgb(255, 130, 135, 145),  Color.FromArgb(255, 175, 180, 190)),
+        new("Clay",       Color.FromArgb(255, 160, 110, 85),   Color.FromArgb(255, 100, 65, 50)),
+        new("Moss",       Color.FromArgb(255, 55, 90, 60),     Color.FromArgb(255, 100, 140, 90)),
+        new("Fog",        Color.FromArgb(255, 120, 125, 140),  Color.FromArgb(255, 180, 185, 200)),
 
-        // Pastels
-        new("Rose",       Color.FromArgb(255, 230, 180, 190),  Color.FromArgb(255, 200, 150, 170)),
-        new("Lavender",   Color.FromArgb(255, 195, 180, 220),  Color.FromArgb(255, 170, 155, 210)),
-        new("Powder",     Color.FromArgb(255, 175, 200, 225),  Color.FromArgb(255, 150, 180, 215)),
-        new("Mint",       Color.FromArgb(255, 175, 220, 200),  Color.FromArgb(255, 150, 200, 180)),
-        new("Peach",      Color.FromArgb(255, 235, 195, 170),  Color.FromArgb(255, 220, 175, 155)),
-        new("Blush",      Color.FromArgb(255, 225, 185, 200),  Color.FromArgb(255, 195, 160, 185)),
-        new("Lilac",      Color.FromArgb(255, 200, 185, 225),  Color.FromArgb(255, 180, 165, 215)),
+        // Dark with color accent
+        new("Storm",      Color.FromArgb(255, 20, 25, 45),     Color.FromArgb(255, 65, 85, 135)),
+        new("Dusk",       Color.FromArgb(255, 35, 20, 55),     Color.FromArgb(255, 100, 55, 120)),
+        new("Merlot",     Color.FromArgb(255, 45, 15, 25),     Color.FromArgb(255, 120, 45, 65)),
+        new("Twilight",   Color.FromArgb(255, 30, 25, 60),     Color.FromArgb(255, 130, 80, 140)),
 
-        // Subtle warm/cool
-        new("Twilight",   Color.FromArgb(255, 45, 35, 65),     Color.FromArgb(255, 140, 90, 120)),
-        new("Horizon",    Color.FromArgb(255, 45, 55, 75),     Color.FromArgb(255, 140, 155, 175)),
-        new("Aurora",     Color.FromArgb(255, 40, 60, 70),     Color.FromArgb(255, 100, 160, 140)),
+        // Dark & moody (more contrast between stops)
+        new("Obsidian",   Color.FromArgb(255, 15, 15, 20),     Color.FromArgb(255, 55, 55, 75)),
+        new("Midnight",   Color.FromArgb(255, 10, 15, 30),     Color.FromArgb(255, 40, 60, 110)),
+        new("Eclipse",    Color.FromArgb(255, 20, 10, 40),     Color.FromArgb(255, 70, 35, 100)),
+        new("Deep Sea",   Color.FromArgb(255, 10, 20, 40),     Color.FromArgb(255, 25, 80, 120)),
+        new("Ember",      Color.FromArgb(255, 35, 15, 10),     Color.FromArgb(255, 110, 40, 25)),
     ];
 }

@@ -60,34 +60,40 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!--  Left Panel: Controls  -->
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Spacing="8">
+            <Grid RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <!--  Wallpaper Gradients  -->
-                    <Grid Margin="0,8,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Style="{StaticResource BodyStrongTextBlockStyle}"
-                            Text="Wallpaper gradients" />
-                        <Button
-                            Grid.Column="1"
-                            Padding="6"
-                            Click="AddGradient_Click"
-                            ToolTipService.ToolTip="Add new gradient">
-                            <FontIcon FontSize="14" Glyph="&#xE710;" />
-                        </Button>
-                    </Grid>
+                <!--  Wallpaper Gradients  -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <TextBlock
-                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}"
-                        Text="Select one of the gradients below to set as a wallpaper"
-                        TextWrapping="Wrap" />
+                        VerticalAlignment="Center"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="Wallpaper gradients" />
+                    <Button
+                        Grid.Column="1"
+                        Padding="6"
+                        Click="AddGradient_Click"
+                        ToolTipService.ToolTip="Add new gradient">
+                        <FontIcon FontSize="14" Glyph="&#xE710;" />
+                    </Button>
+                </Grid>
+                <TextBlock
+                    Grid.Row="1"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="Select one of the gradients below to set as a wallpaper"
+                    TextWrapping="Wrap" />
 
-                    <!--  Gradient Grid  -->
+                <!--  Gradient Grid (scrollable)  -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     <ItemsRepeater Margin="0,12,0,0" ItemsSource="{x:Bind ViewModel.Gradients}">
                         <ItemsRepeater.Layout>
                             <UniformGridLayout
@@ -149,9 +155,8 @@
                             </DataTemplate>
                         </ItemsRepeater.ItemTemplate>
                     </ItemsRepeater>
-
-                </StackPanel>
-            </ScrollViewer>
+                </ScrollViewer>
+            </Grid>
 
             <!--  Right Panel: Preview + Border Slider  -->
             <Grid Grid.Column="1" RowSpacing="12">
