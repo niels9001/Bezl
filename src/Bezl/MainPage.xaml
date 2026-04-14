@@ -164,8 +164,12 @@
                 </ScrollViewer>
             </Grid>
 
-            <!--  Right Panel: Preview + Border Slider  -->
-            <Grid Grid.Column="1" RowSpacing="12">
+            <!--  Right Panel: Preview + Sliders  -->
+            <Grid Grid.Column="1" ColumnSpacing="12" RowSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
@@ -195,97 +199,49 @@
                                 Text="Capture a window to see the preview" />
                         </StackPanel>
 
-                        <!--  Preview with corner radius handles overlay  -->
-                        <Grid
-                            x:Name="PreviewContainer"
-                            PointerEntered="PreviewContainer_PointerEntered"
-                            PointerExited="PreviewContainer_PointerExited"
-                            Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
-                            <Image
-                                x:Name="PreviewImage"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                SizeChanged="PreviewImage_SizeChanged"
-                                Source="{x:Bind ViewModel.PreviewImage, Mode=OneWay}"
-                                Stretch="Uniform" />
-                            <!--  Corner radius handle overlay  -->
-                            <Canvas x:Name="HandleCanvas" IsHitTestVisible="True">
-                                <!--  Top-left handle  -->
-                                <Ellipse
-                                    x:Name="HandleTL"
-                                    Width="16"
-                                    Height="16"
-                                    Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Opacity="0"
-                                    PointerMoved="Handle_PointerMoved"
-                                    PointerPressed="Handle_PointerPressed"
-                                    PointerReleased="Handle_PointerReleased"
-                                    Stroke="White"
-                                    StrokeThickness="2" />
-                                <!--  Top-right handle  -->
-                                <Ellipse
-                                    x:Name="HandleTR"
-                                    Width="16"
-                                    Height="16"
-                                    Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Opacity="0"
-                                    PointerMoved="Handle_PointerMoved"
-                                    PointerPressed="Handle_PointerPressed"
-                                    PointerReleased="Handle_PointerReleased"
-                                    Stroke="White"
-                                    StrokeThickness="2" />
-                                <!--  Bottom-left handle  -->
-                                <Ellipse
-                                    x:Name="HandleBL"
-                                    Width="16"
-                                    Height="16"
-                                    Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Opacity="0"
-                                    PointerMoved="Handle_PointerMoved"
-                                    PointerPressed="Handle_PointerPressed"
-                                    PointerReleased="Handle_PointerReleased"
-                                    Stroke="White"
-                                    StrokeThickness="2" />
-                                <!--  Bottom-right handle  -->
-                                <Ellipse
-                                    x:Name="HandleBR"
-                                    Width="16"
-                                    Height="16"
-                                    Fill="{ThemeResource AccentFillColorDefaultBrush}"
-                                    Opacity="0"
-                                    PointerMoved="Handle_PointerMoved"
-                                    PointerPressed="Handle_PointerPressed"
-                                    PointerReleased="Handle_PointerReleased"
-                                    Stroke="White"
-                                    StrokeThickness="2" />
-                            </Canvas>
-                            <!--  Drag interaction border (shown while dragging)  -->
-                            <Border
-                                x:Name="DragBorder"
-                                BorderBrush="{ThemeResource AccentFillColorDefaultBrush}"
-                                BorderThickness="2"
-                                CornerRadius="4"
-                                IsHitTestVisible="False"
-                                Opacity="0" />
-                            <!--  Corner radius label (shown while dragging)  -->
-                            <Border
-                                x:Name="RadiusLabel"
-                                Padding="8,4"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                CornerRadius="4"
-                                IsHitTestVisible="False"
-                                Opacity="0">
-                                <TextBlock x:Name="RadiusLabelText" FontSize="13" />
-                            </Border>
-                        </Grid>
+                        <!--  Preview image  -->
+                        <Image
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Source="{x:Bind ViewModel.PreviewImage, Mode=OneWay}"
+                            Stretch="Uniform"
+                            Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
                     </Grid>
                 </Border>
-                <!--  Border Padding Slider  -->
 
+                <!--  Corner Radius vertical slider  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Spacing="8"
+                    Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <FontIcon
+                        FontSize="14"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Glyph="&#xF03F;"
+                        ToolTipService.ToolTip="Corner radius" />
+                    <Slider
+                        Width="28"
+                        Height="200"
+                        IsDirectionReversed="True"
+                        Maximum="50"
+                        Minimum="0"
+                        Orientation="Vertical"
+                        StepFrequency="1"
+                        Value="{x:Bind ViewModel.CornerRadius, Mode=TwoWay}" />
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Style="{StaticResource CaptionTextBlockStyle}">
+                        <Run Text="{x:Bind ViewModel.CornerRadius, Mode=OneWay}" />
+                    </TextBlock>
+                </StackPanel>
+
+                <!--  Border Padding Slider  -->
                 <Grid
                     Grid.Row="1"
+                    Grid.ColumnSpan="2"
                     HorizontalAlignment="Center"
                     ColumnSpacing="12"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
@@ -298,7 +254,7 @@
                         FontSize="14"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                         Glyph="&#xE9A6;"
-                        ToolTipService.ToolTip=" Image padding" />
+                        ToolTipService.ToolTip="Image padding" />
                     <Slider
                         Grid.Column="1"
                         Maximum="200"
