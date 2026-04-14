@@ -1,7 +1,7 @@
 using Bezl.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
 
 namespace Bezl;
 
@@ -18,7 +18,7 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             if (_defaultPadding != value)
             {
                 _defaultPadding = value;
-                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(DefaultPadding)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultPadding)));
                 SaveSettings();
             }
         }
@@ -32,13 +32,13 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             if (_defaultCornerRadius != value)
             {
                 _defaultCornerRadius = value;
-                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(DefaultCornerRadius)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultCornerRadius)));
                 SaveSettings();
             }
         }
     }
 
-    public new event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+    public new event PropertyChangedEventHandler? PropertyChanged;
 
     public SettingsPage()
     {

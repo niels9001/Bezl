@@ -51,6 +51,12 @@
                     ToolTipService.ToolTip="Save to file">
                     <FontIcon FontSize="14" Glyph="&#xE74E;" />
                 </Button>
+                <Button
+                    Click="SettingsButton_Click"
+                    Style="{StaticResource SubtleButtonStyle}"
+                    ToolTipService.ToolTip="Settings">
+                    <FontIcon FontSize="14" Glyph="&#xE713;" />
+                </Button>
             </StackPanel>
         </Grid>
 

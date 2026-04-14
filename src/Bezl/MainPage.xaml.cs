@@ -202,4 +202,9 @@ public sealed partial class MainPage : Page
             ViewModel.DeleteGradientCommand.Execute(gradient);
         }
     }
+
+    private void SettingsButton_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(SettingsPage));
+    }
 }

@@ -44,6 +44,9 @@ public partial class MainPageViewModel : ObservableObject
 
     public MainPageViewModel()
     {
+        var settings = SettingsService.Load();
+        _borderPadding = settings.DefaultPadding;
+        _cornerRadius = settings.DefaultCornerRadius;
         LoadGradients();
     }
 
