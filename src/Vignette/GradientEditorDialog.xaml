@@ -10,32 +10,41 @@
     DefaultButton="Primary"
     PrimaryButtonClick="OnPrimaryButtonClick"
     PrimaryButtonText="Save"
+    Style="{StaticResource DefaultContentDialogStyle}"
     mc:Ignorable="d">
 
     <StackPanel MinWidth="400" Spacing="16">
-        <!-- Gradient Preview -->
+        <!--  Gradient Preview  -->
         <Border Height="120" CornerRadius="8">
             <Image x:Name="GradientPreviewImage" Stretch="Fill" />
         </Border>
 
-        <!-- Name -->
+        <!--  Name  -->
         <TextBox
             x:Name="NameBox"
             Header="Name"
             PlaceholderText="Gradient name" />
 
-        <!-- Color buttons row -->
+        <!--  Color buttons row  -->
         <Grid ColumnSpacing="12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Start Color -->
-            <DropDownButton x:Name="StartColorButton" Grid.Column="0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+            <!--  Start Color  -->
+            <DropDownButton
+                x:Name="StartColorButton"
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Border x:Name="StartColorSwatch" Width="20" Height="20" CornerRadius="4" />
-                    <TextBlock Text="Start Color" VerticalAlignment="Center" />
+                    <Border
+                        x:Name="StartColorSwatch"
+                        Width="20"
+                        Height="20"
+                        CornerRadius="4" />
+                    <TextBlock VerticalAlignment="Center" Text="Start Color" />
                 </StackPanel>
                 <DropDownButton.Flyout>
                     <Flyout>
@@ -50,11 +59,19 @@
                 </DropDownButton.Flyout>
             </DropDownButton>
 
-            <!-- End Color -->
-            <DropDownButton x:Name="EndColorButton" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
+            <!--  End Color  -->
+            <DropDownButton
+                x:Name="EndColorButton"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Border x:Name="EndColorSwatch" Width="20" Height="20" CornerRadius="4" />
-                    <TextBlock Text="End Color" VerticalAlignment="Center" />
+                    <Border
+                        x:Name="EndColorSwatch"
+                        Width="20"
+                        Height="20"
+                        CornerRadius="4" />
+                    <TextBlock VerticalAlignment="Center" Text="End Color" />
                 </StackPanel>
                 <DropDownButton.Flyout>
                     <Flyout>
@@ -70,9 +87,12 @@
             </DropDownButton>
         </Grid>
 
-        <!-- Angle -->
+        <!--  Angle  -->
         <StackPanel Spacing="4">
-            <TextBlock x:Name="AngleLabel" Style="{StaticResource CaptionTextBlockStyle}" Text="Angle: 135°" />
+            <TextBlock
+                x:Name="AngleLabel"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="Angle: 135°" />
             <Slider
                 x:Name="AngleSlider"
                 Maximum="360"

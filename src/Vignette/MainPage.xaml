@@ -92,9 +92,9 @@
                         <ItemsRepeater.Layout>
                             <UniformGridLayout
                                 ItemsStretch="Fill"
-                                MinColumnSpacing="8"
-                                MinItemWidth="140"
-                                MinRowSpacing="8" />
+                                MinColumnSpacing="6"
+                                MinItemWidth="90"
+                                MinRowSpacing="6" />
                         </ItemsRepeater.Layout>
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate x:DataType="models:GradientItem">
@@ -129,19 +129,19 @@
                                     </Button.ContextFlyout>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="70" />
+                                            <RowDefinition Height="50" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <!--  Gradient swatch  -->
-                                        <Border Grid.Row="0" CornerRadius="8,8,0,0">
+                                        <Border Grid.Row="0" CornerRadius="6,6,0,0">
                                             <Image Source="{x:Bind Preview, Mode=OneWay}" Stretch="Fill" />
                                         </Border>
                                         <!--  Name  -->
                                         <TextBlock
                                             Grid.Row="1"
-                                            Padding="4,6"
+                                            Padding="2,4"
                                             HorizontalAlignment="Center"
-                                            FontSize="12"
+                                            FontSize="11"
                                             Text="{x:Bind Name, Mode=OneWay}"
                                             TextTrimming="CharacterEllipsis" />
                                     </Grid>
