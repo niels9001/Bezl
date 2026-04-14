@@ -1,7 +1,6 @@
 using Bezl.Services;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
-using Windows.ApplicationModel.DataTransfer;
 
 namespace Bezl;
 
@@ -55,17 +54,5 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             DefaultPadding = DefaultPadding,
             DefaultCornerRadius = DefaultCornerRadius
         });
-    }
-
-    private void CloneRepoCard_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        var data = new DataPackage();
-        data.SetText("git clone https://github.com/niels9001/Bezl");
-        Clipboard.SetContent(data);
-    }
-
-    private async void FileIssueCard_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-        await Windows.System.Launcher.LaunchUriAsync(new System.Uri("https://github.com/niels9001/Bezl/issues/new"));
     }
 }

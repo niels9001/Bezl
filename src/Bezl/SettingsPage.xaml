@@ -46,40 +46,26 @@
                         <toolkit:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xE9A6;" />
                         </toolkit:SettingsCard.HeaderIcon>
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <Slider
-                                Width="200"
-                                Maximum="200"
-                                Minimum="0"
-                                StepFrequency="1"
-                                Value="{x:Bind DefaultPadding, Mode=TwoWay}" />
-                            <TextBlock
-                                Width="40"
-                                VerticalAlignment="Center"
-                                Foreground="{ThemeResource TextFillColorSecondaryBrush}">
-                                <Run Text="{x:Bind DefaultPadding, Mode=OneWay}" /><Run Text="px" />
-                            </TextBlock>
-                        </StackPanel>
+                        <NumberBox
+                            Width="120"
+                            Maximum="200"
+                            Minimum="0"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Compact"
+                            Value="{x:Bind DefaultPadding, Mode=TwoWay}" />
                     </toolkit:SettingsCard>
 
                     <toolkit:SettingsCard Description="The corner rounding applied to new captures" Header="Default corner radius">
                         <toolkit:SettingsCard.HeaderIcon>
                             <FontIcon Glyph="&#xF03F;" />
                         </toolkit:SettingsCard.HeaderIcon>
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <Slider
-                                Width="200"
-                                Maximum="50"
-                                Minimum="0"
-                                StepFrequency="1"
-                                Value="{x:Bind DefaultCornerRadius, Mode=TwoWay}" />
-                            <TextBlock
-                                Width="40"
-                                VerticalAlignment="Center"
-                                Foreground="{ThemeResource TextFillColorSecondaryBrush}">
-                                <Run Text="{x:Bind DefaultCornerRadius, Mode=OneWay}" /><Run Text="px" />
-                            </TextBlock>
-                        </StackPanel>
+                        <NumberBox
+                            Width="120"
+                            Maximum="50"
+                            Minimum="0"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Compact"
+                            Value="{x:Bind DefaultCornerRadius, Mode=TwoWay}" />
                     </toolkit:SettingsCard>
 
                     <!-- About -->
@@ -87,7 +73,7 @@
 
                     <toolkit:SettingsExpander
                         Margin="0,0,0,36"
-                        Description="© 2026 Bezl Contributors"
+                        Description="© 2026 Niels Laute"
                         Header="Bezl">
                         <toolkit:SettingsExpander.HeaderIcon>
                             <ImageIcon Source="Assets/AppIcon.ico" />
@@ -97,39 +83,6 @@
                             IsTextSelectionEnabled="True"
                             Text="Version 1.0.0" />
                         <toolkit:SettingsExpander.Items>
-                            <toolkit:SettingsCard
-                                Click="CloneRepoCard_Click"
-                                Header="To clone this repository"
-                                IsClickEnabled="True">
-                                <TextBlock
-                                    FontFamily="Consolas"
-                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                    IsTextSelectionEnabled="True"
-                                    Text="git clone https://github.com/niels9001/Bezl" />
-                                <toolkit:SettingsCard.ActionIcon>
-                                    <FontIcon Glyph="&#xE8C8;" />
-                                </toolkit:SettingsCard.ActionIcon>
-                            </toolkit:SettingsCard>
-                            <toolkit:SettingsCard
-                                Click="FileIssueCard_Click"
-                                Header="File a bug or request a feature"
-                                IsClickEnabled="True">
-                                <toolkit:SettingsCard.ActionIcon>
-                                    <FontIcon Glyph="&#xE8A7;" />
-                                </toolkit:SettingsCard.ActionIcon>
-                            </toolkit:SettingsCard>
-                            <toolkit:SettingsCard
-                                HorizontalContentAlignment="Left"
-                                ContentAlignment="Vertical"
-                                Header="Dependencies &amp; references">
-                                <StackPanel Margin="-12,0,0,0" Orientation="Vertical">
-                                    <HyperlinkButton Content="Windows App SDK" NavigateUri="https://aka.ms/windowsappsdk" />
-                                    <HyperlinkButton Content="WinUI 3" NavigateUri="https://aka.ms/winui" />
-                                    <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://aka.ms/toolkit/windows" />
-                                    <HyperlinkButton Content="SkiaSharp" NavigateUri="https://github.com/mono/SkiaSharp" />
-                                    <HyperlinkButton Content="Win2D" NavigateUri="https://github.com/Microsoft/Win2D" />
-                                </StackPanel>
-                            </toolkit:SettingsCard>
                             <toolkit:SettingsCard
                                 HorizontalContentAlignment="Left"
                                 ContentAlignment="Vertical"
