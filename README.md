@@ -33,7 +33,7 @@ Bezl lets you create beautiful screenshots in seconds. Pick any open window, and
 ### 1. Set up the environment
 
 > [!NOTE]
-> Bezl requires [Visual Studio 2022](https://visualstudio.microsoft.com/vs/) or later to build and Windows 10 (19041+) or later to execute.
+> Bezl requires [Visual Studio 2026](https://visualstudio.microsoft.com/vs/) or later to build and Windows 10 (19041+) or later to execute.
 
 **Required [Visual Studio components](https://learn.microsoft.com/windows/apps/get-started/start-here?tabs=vs-2022-17-10#required-workloads-and-components):**
 - .NET Desktop Development
