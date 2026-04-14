@@ -58,6 +58,20 @@ public static partial class WindowCaptureService
     [return: MarshalAs(UnmanagedType.Bool)]
     private static partial bool IsWindowVisible(nint hWnd);
 
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool IsIconic(nint hWnd);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool ShowWindow(nint hWnd, int nCmdShow);
+
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool SetForegroundWindow(nint hWnd);
+
+    private const int SW_RESTORE = 9;
+
     private delegate bool EnumWindowsProc(nint hWnd, nint lParam);
 
     [LibraryImport("dwmapi.dll")]
@@ -130,6 +144,14 @@ public static partial class WindowCaptureService
             var targetHwnd = FindWindowByTitle(item.DisplayName);
             if (targetHwnd != nint.Zero)
             {
+                // Restore and bring to front if the target window is minimized
+                if (IsIconic(targetHwnd))
+                {
+                    ShowWindow(targetHwnd, SW_RESTORE);
+                    SetForegroundWindow(targetHwnd);
+                    await Task.Delay(400);
+                }
+
                 var result = CaptureScreenRegionWithBuffer(targetHwnd, item.DisplayName);
                 if (result is not null)
                     return result;
