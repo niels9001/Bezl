@@ -84,6 +84,14 @@
                             Text="Version 1.0.0" />
                         <toolkit:SettingsExpander.Items>
                             <toolkit:SettingsCard
+                                Click="GitHubCard_Click"
+                                Header="Source code on GitHub"
+                                IsClickEnabled="True">
+                                <toolkit:SettingsCard.ActionIcon>
+                                    <FontIcon Glyph="&#xE8A7;" />
+                                </toolkit:SettingsCard.ActionIcon>
+                            </toolkit:SettingsCard>
+                            <toolkit:SettingsCard
                                 HorizontalContentAlignment="Left"
                                 ContentAlignment="Vertical"
                                 Header="License">

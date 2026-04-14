@@ -55,4 +55,9 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
             DefaultCornerRadius = DefaultCornerRadius
         });
     }
+
+    private async void GitHubCard_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        await Windows.System.Launcher.LaunchUriAsync(new System.Uri("https://github.com/niels9001/Bezl"));
+    }
 }
