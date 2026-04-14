@@ -24,6 +24,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button
+                MinWidth="120"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CaptureWindowCommand}"
                 Style="{StaticResource AccentButtonStyle}">
@@ -38,19 +39,24 @@
                 Orientation="Horizontal"
                 Spacing="8">
                 <Button
-                    Command="{x:Bind ViewModel.CopyToClipboardCommand}"
-                    IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"
-                    Style="{StaticResource SubtleButtonStyle}"
-                    ToolTipService.ToolTip="Copy to clipboard">
-                    <FontIcon FontSize="14" Glyph="&#xE8C8;" />
-                </Button>
-                <Button
                     Command="{x:Bind ViewModel.SaveToFileCommand}"
                     IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"
                     Style="{StaticResource SubtleButtonStyle}"
                     ToolTipService.ToolTip="Save to file">
                     <FontIcon FontSize="14" Glyph="&#xE74E;" />
                 </Button>
+                <Button
+                    Command="{x:Bind ViewModel.CopyToClipboardCommand}"
+                    IsEnabled="{x:Bind ViewModel.HasCapture, Mode=OneWay}"
+                    Style="{StaticResource SubtleButtonStyle}"
+                    ToolTipService.ToolTip="Copy to clipboard">
+                    <FontIcon FontSize="14" Glyph="&#xE8C8;" />
+                </Button>
+                <Rectangle
+                    Width="1"
+                    Margin="0,4,0,4"
+                    VerticalAlignment="Stretch"
+                    Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
                 <Button
                     Click="SettingsButton_Click"
                     Style="{StaticResource SubtleButtonStyle}"
@@ -165,7 +171,10 @@
             </Grid>
 
             <!--  Right Panel: Preview + Sliders  -->
-            <Grid Grid.Column="1" ColumnSpacing="12" RowSpacing="12">
+            <Grid
+                Grid.Column="1"
+                ColumnSpacing="12"
+                RowSpacing="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -216,26 +225,31 @@
                     VerticalAlignment="Center"
                     Spacing="8"
                     Visibility="{x:Bind ViewModel.HasCapture, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
-                    <FontIcon
-                        FontSize="14"
+                    <TextBlock
+                        HorizontalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Glyph="&#xF03F;"
-                        ToolTipService.ToolTip="Corner radius" />
+                        Style="{StaticResource CaptionTextBlockStyle}"
+                        TextAlignment="Center">
+                        <Run Text="{x:Bind ViewModel.CornerRadius, Mode=OneWay}" />
+                    </TextBlock>
                     <Slider
                         Width="28"
                         Height="200"
+                        HorizontalAlignment="Center"
                         IsDirectionReversed="True"
                         Maximum="50"
                         Minimum="0"
                         Orientation="Vertical"
                         StepFrequency="1"
                         Value="{x:Bind ViewModel.CornerRadius, Mode=TwoWay}" />
-                    <TextBlock
+
+                    <FontIcon
+                        Margin="3,0,0,0"
                         HorizontalAlignment="Center"
+                        FontSize="14"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                        Style="{StaticResource CaptionTextBlockStyle}">
-                        <Run Text="{x:Bind ViewModel.CornerRadius, Mode=OneWay}" />
-                    </TextBlock>
+                        Glyph="&#xE71A;"
+                        ToolTipService.ToolTip="Corner radius" />
                 </StackPanel>
 
                 <!--  Border Padding Slider  -->

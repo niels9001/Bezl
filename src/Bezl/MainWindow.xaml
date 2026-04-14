@@ -19,8 +19,7 @@
         </Grid.RowDefinitions>
 
         <TitleBar x:Name="AppTitleBar" Title="Bezl"
-                 IsBackButtonVisible="True"
-                 IsBackButtonEnabled="{x:Bind RootFrame.CanGoBack, Mode=OneWay}"
+                 IsBackButtonVisible="{x:Bind RootFrame.CanGoBack, Mode=OneWay}"
                  BackRequested="AppTitleBar_BackRequested">
             <TitleBar.IconSource>
                 <ImageIconSource ImageSource="Assets/AppIcon.ico" />

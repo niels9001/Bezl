@@ -39,7 +39,7 @@
                         <RepositionThemeTransition />
                     </StackPanel.ChildrenTransitions>
 
-                    <!-- Capture defaults -->
+                    <!--  Capture defaults  -->
                     <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Capture defaults" />
 
                     <toolkit:SettingsCard Description="The border padding applied to new captures" Header="Default padding">
@@ -57,7 +57,7 @@
 
                     <toolkit:SettingsCard Description="The corner rounding applied to new captures" Header="Default corner radius">
                         <toolkit:SettingsCard.HeaderIcon>
-                            <FontIcon Glyph="&#xF03F;" />
+                            <FontIcon Glyph="&#xE71A;" />
                         </toolkit:SettingsCard.HeaderIcon>
                         <NumberBox
                             Width="120"
@@ -68,7 +68,7 @@
                             Value="{x:Bind DefaultCornerRadius, Mode=TwoWay}" />
                     </toolkit:SettingsCard>
 
-                    <!-- About -->
+                    <!--  About  -->
                     <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
 
                     <toolkit:SettingsExpander
