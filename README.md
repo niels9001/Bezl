@@ -39,8 +39,8 @@ git clone https://github.com/niels9001/Bezl.git
 
 **Command line:**
 ```powershell
-dotnet build src\Bezl\Bezl.csproj -p:Platform=x64
-dotnet run --project src\Bezl\Bezl.csproj
+dotnet build Bezl\Bezl.csproj -p:Platform=x64
+dotnet run --project Bezl\Bezl.csproj
 ```
 
 ## 🖼️ How It Works
