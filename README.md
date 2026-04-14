@@ -1,15 +1,14 @@
 <h1 align="center">Bezl</h1>
 <p align="center">Beautiful screenshot borders made easy</p>
 
-A WinUI 3 desktop app for capturing window screenshots with customizable gradient borders and rounded corners. Pick any window, frame it with a gradient, round the corners, and export — all in a few clicks.
+Bezl lets you create beautiful screenshots in seconds. Pick any open window, and Bezl captures it — then adjust the padding and corner radius to get the perfect framed look. Pair it with a gradient wallpaper backdrop so your window truly shines, and export the result as a polished PNG or straight to your clipboard.
 
 ## ⭐ Features
 
-- **Click-to-pick window capture** — Select any window to screenshot using the system window picker
-- **Gradient borders** — Add a gradient background around your screenshot with configurable padding
-- **Corner radius** — Round the corners of your screenshots for a polished look
-- **Gradient presets** — Choose from 24 built-in presets or create your own
-- **Set as wallpaper** — Apply your gradient as the desktop wallpaper for cohesive screenshots
+- **Click-to-pick capture** — Select any open window using the system picker and Bezl does the rest
+- **Adjustable padding** — Fine-tune the border space around your screenshot after capture
+- **Corner radius** — Round the corners for a polished, modern look
+- **Gradient wallpapers** — Choose from 24 built-in gradient presets or create your own, then set it as your desktop wallpaper so every capture has a beautiful backdrop
 - **Export options** — Copy to clipboard or save as PNG
 
 ## 🚀 Getting started
@@ -45,11 +44,10 @@ dotnet run --project Bezl\Bezl.csproj
 
 ## 🖼️ How It Works
 
-1. **Choose a gradient** — Pick a preset or create your own
-2. **(Optional) Set as wallpaper** — Apply the gradient to your desktop
-3. **Capture a window** — Click "Capture" and select your target
-4. **Adjust** — Drag corner handles for radius, use the slider for padding
-5. **Export** — Copy to clipboard or save as PNG
+1. **(Optional) Set a gradient wallpaper** — Pick a preset or create your own gradient and apply it as your desktop wallpaper for a beautiful backdrop
+2. **Capture a window** — Click "Capture" and select the window you want to screenshot
+3. **Adjust** — Tweak the padding and corner radius until it looks just right
+4. **Export** — Copy to clipboard or save as PNG
 
 ## ➡️ Related
 
