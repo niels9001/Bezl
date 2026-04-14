@@ -9,15 +9,15 @@
   IgnorableNamespaces="uap rescap systemai">
 
   <Identity
-    Name="AA6D6174-B522-4889-8362-91FDDBF4C8F7"
-    Publisher="CN=AppPublisher"
+    Name="27078NielsLaute.Bezl"
+    Publisher="CN=D821D027-C2F6-4E57-A741-849AE0C48C59"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="AA6D6174-B522-4889-8362-91FDDBF4C8F7" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Bezl</DisplayName>
-    <PublisherDisplayName>AppPublisher</PublisherDisplayName>
+    <PublisherDisplayName>NielsLaute</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -36,7 +36,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="Bezl"
-        Description="Bezl"
+        Description="Beautiful screenshot borders made easy"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
