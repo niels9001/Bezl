@@ -27,7 +27,9 @@
                 MinWidth="120"
                 HorizontalAlignment="Stretch"
                 Command="{x:Bind ViewModel.CaptureWindowCommand}"
-                Style="{StaticResource AccentButtonStyle}">
+                Style="{StaticResource AccentButtonStyle}"
+                ToolTipService.ToolTip="Capture a window (or press Ctrl+Shift+S while focusing another window)"
+                >
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon FontSize="14" Glyph="&#xE722;" />
                     <TextBlock Margin="0,-2,0,0" Text="Capture" />
@@ -76,11 +78,52 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
+                <!--  Recent Wallpapers  -->
+                <TextBlock
+                    Margin="0,8,0,0"
+                    Style="{StaticResource BodyStrongTextBlockStyle}"
+                    Text="Recent wallpapers" />
+                <TextBlock
+                    Grid.Row="1"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="Your recent desktop wallpapers"
+                    TextWrapping="Wrap" />
+
+                <ItemsRepeater
+                    Grid.Row="2"
+                    Margin="0,8,0,16"
+                    ItemsSource="{x:Bind ViewModel.RecentWallpapers}">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Orientation="Horizontal" Spacing="6" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="models:RecentWallpaperItem">
+                            <Button
+                                Padding="0"
+                                Click="RecentWallpaperCard_Click"
+                                CornerRadius="6"
+                                Tag="{x:Bind}"
+                                ToolTipService.ToolTip="{x:Bind FilePath}">
+                                <Border
+                                    Width="80"
+                                    Height="50"
+                                    CornerRadius="6">
+                                    <Image Source="{x:Bind Thumbnail, Mode=OneWay}" Stretch="UniformToFill" />
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+
                 <!--  Wallpaper Gradients  -->
-                <Grid Margin="0,8,0,0">
+                <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
@@ -88,7 +131,7 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         Style="{StaticResource BodyStrongTextBlockStyle}"
-                        Text="Wallpaper gradients" />
+                        Text="Gradient wallpapers" />
                     <Button
                         Grid.Column="1"
                         Padding="6"
@@ -98,14 +141,14 @@
                     </Button>
                 </Grid>
                 <TextBlock
-                    Grid.Row="1"
+                    Grid.Row="4"
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     Style="{StaticResource CaptionTextBlockStyle}"
                     Text="Select one of the gradients below to set as a wallpaper"
                     TextWrapping="Wrap" />
 
                 <!--  Gradient Grid (scrollable)  -->
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto">
                     <ItemsRepeater Margin="0,12,0,0" ItemsSource="{x:Bind ViewModel.Gradients}">
                         <ItemsRepeater.Layout>
                             <UniformGridLayout

@@ -15,6 +15,16 @@ public sealed partial class MainPage : Page
         InitializeComponent();
     }
 
+    // --- Recent wallpaper handlers ---
+
+    private void RecentWallpaperCard_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is Models.RecentWallpaperItem item)
+        {
+            ViewModel.SetRecentWallpaperCommand.Execute(item);
+        }
+    }
+
     // --- Gradient card handlers ---
 
     private void GradientCard_Click(object sender, RoutedEventArgs e)

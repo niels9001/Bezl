@@ -1,3 +1,4 @@
+using Bezl.Services;
 using Microsoft.UI.Xaml;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -12,6 +13,8 @@ namespace Bezl;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+    private HotkeyService? _hotkeyService;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -23,6 +26,33 @@ public sealed partial class MainWindow : Window
 
         // Navigate the root frame to the main page on startup.
         RootFrame.Navigate(typeof(MainPage));
+
+        // Register global hotkey (Ctrl+Shift+S) once the window has a handle
+        RegisterGlobalHotkey();
+    }
+
+    private void RegisterGlobalHotkey()
+    {
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        _hotkeyService = new HotkeyService(hwnd);
+        _hotkeyService.HotkeyPressed += OnHotkeyPressed;
+        _hotkeyService.Register();
+    }
+
+    private void OnHotkeyPressed()
+    {
+        App.DispatcherQueue.TryEnqueue(async () =>
+        {
+            if (RootFrame.Content is MainPage page)
+            {
+                await page.ViewModel.HandleHotkeyCaptureAsync();
+
+                // Bring Bezl to the front after capture
+                var presenter = AppWindow.Presenter as Microsoft.UI.Windowing.OverlappedPresenter;
+                presenter?.Restore();
+                this.Activate();
+            }
+        });
     }
 
     private void AppTitleBar_BackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)

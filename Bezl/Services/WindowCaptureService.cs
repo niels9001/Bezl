@@ -10,6 +10,9 @@ namespace Bezl.Services;
 
 public static partial class WindowCaptureService
 {
+    [LibraryImport("user32.dll")]
+    private static partial nint GetForegroundWindow();
+
     [LibraryImport("user32.dll", EntryPoint = "FindWindowW", StringMarshalling = StringMarshalling.Utf16)]
     private static partial nint FindWindow(string? lpClassName, string lpWindowName);
 
@@ -355,5 +358,18 @@ public static partial class WindowCaptureService
         {
             gcHandle.Free();
         }
+    }
+
+    public static CaptureResult? CaptureForegroundWindow()
+    {
+        var hwnd = GetForegroundWindow();
+        if (hwnd == nint.Zero || hwnd == App.WindowHandle)
+            return null;
+
+        var buffer = new char[512];
+        var len = GetWindowText(hwnd, buffer, buffer.Length);
+        var title = len > 0 ? new string(buffer, 0, len) : "Unknown";
+
+        return CaptureScreenRegionWithBuffer(hwnd, title);
     }
 }

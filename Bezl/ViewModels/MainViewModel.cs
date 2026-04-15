@@ -39,6 +39,9 @@ public partial class MainPageViewModel : ObservableObject
 
     public ObservableCollection<GradientItem> Gradients { get; } = [];
 
+    // Recent wallpapers
+    public ObservableCollection<RecentWallpaperItem> RecentWallpapers { get; } = [];
+
     private CaptureResult? _captureResult;
     private SKBitmap? _composedBitmap;
 
@@ -48,6 +51,7 @@ public partial class MainPageViewModel : ObservableObject
         _borderPadding = settings.DefaultPadding;
         _cornerRadius = settings.DefaultCornerRadius;
         LoadGradients();
+        LoadRecentWallpapers();
     }
 
     private async void LoadGradients()
@@ -70,6 +74,50 @@ public partial class MainPageViewModel : ObservableObject
             SelectedGradient = Gradients[0];
             SelectedGradient.IsSelected = true;
         }
+    }
+
+    private async void LoadRecentWallpapers()
+    {
+        RecentWallpapers.Clear();
+        var currentPath = RecentWallpaperService.GetCurrentWallpaperPath();
+        var paths = RecentWallpaperService.GetRecentWallpapers();
+
+        foreach (var path in paths)
+        {
+            var isCurrent = string.Equals(path, currentPath, StringComparison.OrdinalIgnoreCase);
+            var item = new RecentWallpaperItem(path, isCurrent);
+            RecentWallpapers.Add(item);
+        }
+
+        foreach (var item in RecentWallpapers)
+        {
+            await item.LoadThumbnailAsync();
+        }
+    }
+
+    [RelayCommand]
+    private void SetRecentWallpaper(RecentWallpaperItem item)
+    {
+        try
+        {
+            WallpaperService.SetImageAsWallpaper(item.FilePath);
+            StatusText = "Wallpaper set!";
+
+            // Update current indicators
+            foreach (var wp in RecentWallpapers)
+                wp.IsCurrentWallpaper = false;
+            item.IsCurrentWallpaper = true;
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Failed to set wallpaper: {ex.Message}";
+        }
+    }
+
+    [RelayCommand]
+    private void RefreshRecentWallpapers()
+    {
+        LoadRecentWallpapers();
     }
 
     private void SaveGradients()
@@ -157,6 +205,7 @@ public partial class MainPageViewModel : ObservableObject
         {
             WallpaperService.SetGradientAsWallpaper(SelectedGradient.ToDefinition());
             StatusText = $"Wallpaper set to \"{SelectedGradient.Name}\"!";
+            LoadRecentWallpapers();
         }
         catch (Exception ex)
         {
@@ -179,11 +228,7 @@ public partial class MainPageViewModel : ObservableObject
                 return;
             }
 
-            _captureResult?.Dispose();
-            _captureResult = result;
-            HasCapture = true;
-            StatusText = $"Captured: {result.WindowTitle}";
-
+            ApplyCaptureResult(result);
             await RecomposeAsync();
         }
         catch (Exception ex)
@@ -194,6 +239,34 @@ public partial class MainPageViewModel : ObservableObject
         {
             IsCapturing = false;
         }
+    }
+
+    public async Task HandleHotkeyCaptureAsync()
+    {
+        try
+        {
+            var result = WindowCaptureService.CaptureForegroundWindow();
+            if (result is null)
+            {
+                StatusText = "No window to capture";
+                return;
+            }
+
+            ApplyCaptureResult(result);
+            await RecomposeAsync();
+        }
+        catch (Exception ex)
+        {
+            StatusText = $"Capture failed: {ex.Message}";
+        }
+    }
+
+    private void ApplyCaptureResult(CaptureResult result)
+    {
+        _captureResult?.Dispose();
+        _captureResult = result;
+        HasCapture = true;
+        StatusText = $"Captured: {result.WindowTitle}";
     }
 
     [RelayCommand]

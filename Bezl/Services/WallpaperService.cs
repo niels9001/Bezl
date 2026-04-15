@@ -72,4 +72,20 @@ public static partial class WallpaperService
 
         SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, wallpaperPath, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
     }
+
+    public static void SetImageAsWallpaper(string filePath)
+    {
+        if (!File.Exists(filePath))
+            throw new FileNotFoundException("Wallpaper image not found", filePath);
+
+        // Set wallpaper style to "Fill"
+        using var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
+        if (key is not null)
+        {
+            key.SetValue("WallpaperStyle", "10");
+            key.SetValue("TileWallpaper", "0");
+        }
+
+        SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, filePath, SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+    }
 }

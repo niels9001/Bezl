@@ -23,6 +23,7 @@ Bezl lets you create beautiful screenshots in seconds. Pick any open window, and
 ## ⭐ Features
 
 - **Click-to-pick capture** — Select any open window using the system picker and Bezl does the rest
+- **Global hotkey** — Press **Ctrl+Shift+S** while focusing any window to capture it instantly — no need to switch back to Bezl first
 - **Adjustable padding** — Fine-tune the border space around your screenshot after capture
 - **Corner radius** — Round the corners for a polished, modern look
 - **Gradient wallpapers** — Choose from 24 built-in gradient presets or create your own, then set it as your desktop wallpaper so every capture has a beautiful backdrop
@@ -62,7 +63,7 @@ dotnet run --project Bezl\Bezl.csproj
 ## 🖼️ How It Works
 
 1. **(Optional) Set a gradient wallpaper** — Pick a preset or create your own gradient and apply it as your desktop wallpaper for a beautiful backdrop
-2. **Capture a window** — Click "Capture" and select the window you want to screenshot
+2. **Capture a window** — Click "Capture" and select a window, or press **Ctrl+Shift+S** while focusing the window you want to capture
 3. **Adjust** — Tweak the padding and corner radius until it looks just right
 4. **Export** — Copy to clipboard or save as PNG
 
