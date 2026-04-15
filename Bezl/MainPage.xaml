@@ -96,31 +96,28 @@
                     Text="Your recent desktop wallpapers"
                     TextWrapping="Wrap" />
 
-                <ItemsRepeater
+                <ItemsView
                     Grid.Row="2"
                     Margin="0,8,0,16"
-                    ItemsSource="{x:Bind ViewModel.RecentWallpapers}">
-                    <ItemsRepeater.Layout>
+                    ItemsSource="{x:Bind ViewModel.RecentWallpapers}"
+                    ItemInvoked="RecentWallpaperView_ItemInvoked">
+                    <ItemsView.Layout>
                         <StackLayout Orientation="Horizontal" Spacing="6" />
-                    </ItemsRepeater.Layout>
-                    <ItemsRepeater.ItemTemplate>
+                    </ItemsView.Layout>
+                    <ItemsView.ItemTemplate>
                         <DataTemplate x:DataType="models:RecentWallpaperItem">
-                            <Button
-                                Padding="0"
-                                Click="RecentWallpaperCard_Click"
-                                CornerRadius="6"
-                                Tag="{x:Bind}"
-                                ToolTipService.ToolTip="{x:Bind FilePath}">
+                            <ItemContainer>
                                 <Border
                                     Width="80"
                                     Height="50"
-                                    CornerRadius="6">
+                                    CornerRadius="6"
+                                    ToolTipService.ToolTip="{x:Bind FilePath}">
                                     <Image Source="{x:Bind Thumbnail, Mode=OneWay}" Stretch="UniformToFill" />
                                 </Border>
-                            </Button>
+                            </ItemContainer>
                         </DataTemplate>
-                    </ItemsRepeater.ItemTemplate>
-                </ItemsRepeater>
+                    </ItemsView.ItemTemplate>
+                </ItemsView>
 
                 <!--  Wallpaper Gradients  -->
                 <Grid Grid.Row="3">

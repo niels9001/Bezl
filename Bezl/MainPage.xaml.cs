@@ -17,9 +17,9 @@ public sealed partial class MainPage : Page
 
     // --- Recent wallpaper handlers ---
 
-    private void RecentWallpaperCard_Click(object sender, RoutedEventArgs e)
+    private void RecentWallpaperView_ItemInvoked(ItemsView sender, ItemsViewItemInvokedEventArgs e)
     {
-        if (sender is Button button && button.Tag is Models.RecentWallpaperItem item)
+        if (e.InvokedItem is Models.RecentWallpaperItem item)
         {
             ViewModel.SetRecentWallpaperCommand.Execute(item);
         }
