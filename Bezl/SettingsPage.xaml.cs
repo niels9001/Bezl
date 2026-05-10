@@ -9,14 +9,21 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     private int _defaultPadding;
     private double _defaultCornerRadius;
 
-    public int DefaultPadding
+    public double DefaultPadding
     {
         get => _defaultPadding;
         set
         {
-            if (_defaultPadding != value)
+            if (double.IsNaN(value) || double.IsInfinity(value))
             {
-                _defaultPadding = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultPadding)));
+                return;
+            }
+
+            var coerced = (int)Math.Clamp(value, 0, 200);
+            if (_defaultPadding != coerced)
+            {
+                _defaultPadding = coerced;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultPadding)));
                 SaveSettings();
             }
@@ -28,9 +35,16 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
         get => _defaultCornerRadius;
         set
         {
-            if (_defaultCornerRadius != value)
+            if (double.IsNaN(value) || double.IsInfinity(value))
             {
-                _defaultCornerRadius = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultCornerRadius)));
+                return;
+            }
+
+            var coerced = Math.Clamp(value, 0, 100);
+            if (_defaultCornerRadius != coerced)
+            {
+                _defaultCornerRadius = coerced;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DefaultCornerRadius)));
                 SaveSettings();
             }
@@ -51,7 +65,7 @@ public sealed partial class SettingsPage : Page, INotifyPropertyChanged
     {
         SettingsService.Save(new AppSettings
         {
-            DefaultPadding = DefaultPadding,
+            DefaultPadding = (int)DefaultPadding,
             DefaultCornerRadius = DefaultCornerRadius
         });
     }

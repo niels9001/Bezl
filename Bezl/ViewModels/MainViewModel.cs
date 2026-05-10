@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Bezl.Helpers;
 using Bezl.Models;
@@ -44,6 +45,11 @@ public partial class MainPageViewModel : ObservableObject
 
     private CaptureResult? _captureResult;
     private SKBitmap? _composedBitmap;
+
+    // Debounce slider-driven recomposes so a drag collapses to a single SkiaSharp
+    // composition once the user stops moving. Created lazily on the UI thread.
+    private DispatcherQueueTimer? _recomposeDebounceTimer;
+    private const int RecomposeDebounceMs = 50;
 
     public MainPageViewModel()
     {
@@ -125,8 +131,29 @@ public partial class MainPageViewModel : ObservableObject
         GradientStore.Save(Gradients.Select(g => g.ToDefinition()));
     }
 
-    partial void OnBorderPaddingChanged(int value) => _ = RecomposeAsync();
-    partial void OnCornerRadiusChanged(double value) => _ = RecomposeAsync();
+    partial void OnBorderPaddingChanged(int value) => ScheduleRecompose();
+    partial void OnCornerRadiusChanged(double value) => ScheduleRecompose();
+
+    private void ScheduleRecompose()
+    {
+        var dispatcher = DispatcherQueue.GetForCurrentThread();
+        if (dispatcher == null)
+        {
+            _ = RecomposeAsync();
+            return;
+        }
+
+        if (_recomposeDebounceTimer == null)
+        {
+            _recomposeDebounceTimer = dispatcher.CreateTimer();
+            _recomposeDebounceTimer.IsRepeating = false;
+            _recomposeDebounceTimer.Interval = TimeSpan.FromMilliseconds(RecomposeDebounceMs);
+            _recomposeDebounceTimer.Tick += (_, _) => _ = RecomposeAsync();
+        }
+
+        _recomposeDebounceTimer.Stop();
+        _recomposeDebounceTimer.Start();
+    }
 
     [RelayCommand]
     private void SelectGradient(GradientItem item)
