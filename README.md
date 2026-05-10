@@ -67,11 +67,6 @@ dotnet run --project Bezl\Bezl.csproj
 3. **Adjust** — Tweak the padding and corner radius until it looks just right
 4. **Export** — Copy to clipboard or save as PNG
 
-## ➡️ Related
-
-- [Get started with WinUI](https://learn.microsoft.com/windows/apps/get-started/start-here)
-- [Windows App SDK](https://github.com/microsoft/WindowsAppSDK)
-
 ## License
 
 [MIT](LICENSE)
