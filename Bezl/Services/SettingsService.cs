@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Bezl.Services;
 
@@ -17,7 +18,7 @@ public static class SettingsService
         try
         {
             var json = File.ReadAllText(SettingsPath);
-            return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+            return JsonSerializer.Deserialize(json, AppSettingsJsonContext.Default.AppSettings) ?? new AppSettings();
         }
         catch
         {
@@ -28,7 +29,7 @@ public static class SettingsService
     public static void Save(AppSettings settings)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath)!);
-        var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(settings, AppSettingsJsonContext.Default.AppSettings);
         File.WriteAllText(SettingsPath, json);
     }
 }
@@ -37,4 +38,10 @@ public record AppSettings
 {
     public int DefaultPadding { get; init; } = 16;
     public double DefaultCornerRadius { get; init; } = 0;
+}
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(AppSettings))]
+internal partial class AppSettingsJsonContext : JsonSerializerContext
+{
 }

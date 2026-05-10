@@ -83,7 +83,7 @@
                         <TextBlock
                             Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                             IsTextSelectionEnabled="True"
-                            Text="Version 1.0.0" />
+                            Text="Version 1.1.0.0" />
                         <toolkit:SettingsExpander.Items>
                             <toolkit:SettingsCard
                                 Click="GitHubCard_Click"
@@ -103,7 +103,6 @@
                             </toolkit:SettingsCard>
                         </toolkit:SettingsExpander.Items>
                     </toolkit:SettingsExpander>
-
                 </StackPanel>
             </Border>
         </ScrollView>

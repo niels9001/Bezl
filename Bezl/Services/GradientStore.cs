@@ -21,7 +21,7 @@ public static class GradientStore
         try
         {
             var json = File.ReadAllText(StorePath);
-            var dtos = JsonSerializer.Deserialize<List<GradientDto>>(json) ?? [];
+            var dtos = JsonSerializer.Deserialize(json, GradientJsonContext.Default.ListGradientDto) ?? [];
             var gradients = dtos.Select(d => d.ToDefinition()).ToList();
             return gradients.Count > 0 ? gradients : new List<GradientDefinition>(GradientDefinition.Presets);
         }
@@ -35,11 +35,11 @@ public static class GradientStore
     {
         Directory.CreateDirectory(Path.GetDirectoryName(StorePath)!);
         var dtos = gradients.Select(g => GradientDto.FromDefinition(g)).ToList();
-        var json = JsonSerializer.Serialize(dtos, new JsonSerializerOptions { WriteIndented = true });
+        var json = JsonSerializer.Serialize(dtos, GradientJsonContext.Default.ListGradientDto);
         File.WriteAllText(StorePath, json);
     }
 
-    private record GradientDto(
+    internal record GradientDto(
         string Name,
         string StartColor,
         string EndColor,
@@ -62,4 +62,10 @@ public static class GradientStore
 
         private static string ColorToHex(Color c) => $"#{c.A:X2}{c.R:X2}{c.G:X2}{c.B:X2}";
     }
+}
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(List<GradientStore.GradientDto>))]
+internal partial class GradientJsonContext : JsonSerializerContext
+{
 }

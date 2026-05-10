@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace Bezl;
 
-public sealed class InvertedBoolToVisibilityConverter : IValueConverter
+public sealed partial class InvertedBoolToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language) =>
         value is true ? Visibility.Collapsed : Visibility.Visible;
@@ -12,7 +12,7 @@ public sealed class InvertedBoolToVisibilityConverter : IValueConverter
         value is Visibility.Collapsed;
 }
 
-public sealed class BoolToVisibilityConverter : IValueConverter
+public sealed partial class BoolToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language) =>
         value is true ? Visibility.Visible : Visibility.Collapsed;

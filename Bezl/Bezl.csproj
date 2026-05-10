@@ -63,9 +63,15 @@
 
   <!-- Publish Properties -->
   <PropertyGroup>
-    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+    <PublishReadyToRun Condition="'$(Configuration)' == 'Debug' or '$(PublishAot)' == 'true'">False</PublishReadyToRun>
+    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug' and '$(PublishAot)' != 'true'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+  </PropertyGroup>
+
+  <!-- Native AOT (opt-in via /p:PublishAot=true) -->
+  <PropertyGroup Condition="'$(PublishAot)' == 'true'">
+    <IsAotCompatible>true</IsAotCompatible>
+    <TrimMode>partial</TrimMode>
   </PropertyGroup>
 </Project>
