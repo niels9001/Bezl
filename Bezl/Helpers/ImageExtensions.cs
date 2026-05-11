@@ -43,16 +43,18 @@ public static class ImageExtensions
 
     public static async Task SaveToFileAsync(SKBitmap bitmap, nint windowHandle)
     {
-        var savePicker = new Windows.Storage.Pickers.FileSavePicker();
-        WinRT.Interop.InitializeWithWindow.Initialize(savePicker, windowHandle);
-        savePicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
-        savePicker.SuggestedFileName = $"Screenshot_{DateTime.Now:yyyyMMdd_HHmmss}";
+        var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(windowHandle);
+        var savePicker = new Microsoft.Windows.Storage.Pickers.FileSavePicker(windowId)
+        {
+            SuggestedStartLocation = Microsoft.Windows.Storage.Pickers.PickerLocationId.PicturesLibrary,
+            SuggestedFileName = $"Screenshot_{DateTime.Now:yyyyMMdd_HHmmss}",
+        };
         savePicker.FileTypeChoices.Add("PNG Image", [".png"]);
 
-        var file = await savePicker.PickSaveFileAsync();
-        if (file is null) return;
+        var result = await savePicker.PickSaveFileAsync();
+        if (result is null || string.IsNullOrEmpty(result.Path)) return;
 
         var pngData = Bezl.Services.ScreenshotComposer.EncodeToPng(bitmap);
-        await Windows.Storage.FileIO.WriteBytesAsync(file, pngData);
+        await File.WriteAllBytesAsync(result.Path, pngData);
     }
 }
